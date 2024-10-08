@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mo3een/core/components/widgets/manager_view.dart';
 import 'package:mo3een/core/helpers/theme_helper.dart';
-import 'package:mo3een/features/home/presentation/home.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Mo3eenApp extends StatelessWidget {
@@ -15,7 +15,7 @@ class Mo3eenApp extends StatelessWidget {
       locale: context.locale,
       debugShowCheckedModeBanner: false,
       theme: AppThemeHelper.appTheme,
-      home: const AppHome(),
+      home: const ManagerView(),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_states.dart';
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
+import 'package:mo3een/features/home/presentation/home.dart';
 
 class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
   BottomNavBarCubit() : super(BottomNavBarInitialState());
@@ -36,7 +37,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
   ];
 
   List<Widget> screens =[
-    Scaffold(body: Container(color: Colors.red,),),
+    //Scaffold(body: Container(color: Colors.red,),),
+    const HomeView(),
     Scaffold(body: Container(color: Colors.green,),),
     Scaffold(body: Container(color: Colors.blue,),),
     Scaffold(body: Container(color: Colors.yellow,),),
