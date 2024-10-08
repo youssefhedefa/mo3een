@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mo3een/core/components/widgets/bottom_nav_bar.dart';
+import 'package:mo3een/core/components/custom_bottom_nav_bar/ui/bottom_nav_bar.dart';
 
 
 class AppHome extends StatelessWidget {
