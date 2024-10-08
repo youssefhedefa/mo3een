@@ -4,4 +4,5 @@ abstract class AppIconHelper {
   static const String azkarIcon = 'assets/icons/azkar.svg';
   static const String sep7aIcon = 'assets/icons/sepha.svg';
   static const String qeplaIcon = 'assets/icons/qpla.svg';
+  static const String handIcon = 'assets/icons/hand.svg';
 }
