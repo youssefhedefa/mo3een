@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mo3een/core/helpers/color_helper.dart';
-import 'package:mo3een/core/utilities/constants.dart';
+import 'package:mo3een/core/helpers/theme_helper.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Mo3eenApp extends StatelessWidget {
   const Mo3eenApp({super.key});
@@ -10,20 +10,11 @@ class Mo3eenApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Mo3een',
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: AppColorHelper.primaryColor),
-        useMaterial3: true,
-        scaffoldBackgroundColor: AppColorHelper.whiteColor,
-        bottomAppBarTheme: const BottomAppBarTheme(
-          color: AppColorHelper.whiteColor,
-        ),
-      ).copyWith(
-        textTheme: ThemeData().textTheme.apply(
-              fontFamily: AppConstants.fontFamilyName,
-            ),
-      ),
+      theme: AppThemeHelper.appTheme,
       home: const AppHome(),
     );
   }
