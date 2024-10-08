@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 abstract class AppTextStyleHelper{
-  static const TextStyle font10BoldPrimary = TextStyle(
-    fontSize: 10,
+  static TextStyle font10BoldPrimary = TextStyle(
+    fontSize: 10.sp,
     fontWeight: FontWeight.bold,
     color: AppColorHelper.primaryColor,
   );
 
-  static const TextStyle font10RegularLightPrimary = TextStyle(
-    fontSize: 10,
+  static TextStyle font10RegularLightPrimary = TextStyle(
+    fontSize: 10.sp,
     color: AppColorHelper.lightPrimaryColor,
   );
 }
