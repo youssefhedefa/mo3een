@@ -3,6 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/features/home/presentation/widgets/current_location_marker.dart';
 import 'package:mo3een/features/home/presentation/widgets/home_header.dart';
 import 'package:mo3een/features/home/presentation/widgets/next_salah_container.dart';
+import 'package:mo3een/features/home/presentation/widgets/picked_date_viewer.dart';
+import 'package:mo3een/features/home/presentation/widgets/prayer_times_list.dart';
+
+import 'widgets/ayah_el_youm.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -11,19 +15,28 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding:
-            REdgeInsets.only(top: 76.h, left: 24.w, right: 24.w, bottom: 14.h),
-        child: const Column(
-          children: [
-            HomeHeader(),
-            SizedBox(height: 24),
-            CurrentLocationMarker(),
-            SizedBox(height: 12),
-            NextSalahContainer(),
-          ],
+        padding: REdgeInsets.symmetric(
+          horizontal: 24.w,
+        ),
+        child: const SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 76,
+              ),
+              HomeHeader(),
+              SizedBox(height: 24),
+              CurrentLocationMarker(),
+              SizedBox(height: 12),
+              NextSalahContainer(),
+              PickedDateViewer(),
+              PrayerTimesList(),
+              AyahElYoum(),
+              SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

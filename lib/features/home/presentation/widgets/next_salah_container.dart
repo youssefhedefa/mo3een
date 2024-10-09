@@ -40,14 +40,9 @@ class NextSalahContainer extends StatelessWidget {
             ),
           ),
           Center(
-            child: Expanded(
-              flex: 30,
-              child: Center(
-                child: Image.asset(
-                  AppImageHelper.prayerImage,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            child: Image.asset(
+              AppImageHelper.prayerImage,
+              fit: BoxFit.cover,
             ),
           ),
         ],

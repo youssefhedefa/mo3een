@@ -8,6 +8,17 @@ abstract class AppTextStyleHelper{
     color: AppColorHelper.primaryColor,
   );
 
+  static TextStyle font12RegularPrimary = TextStyle(
+    fontSize: 12.sp,
+    color: AppColorHelper.primaryColor,
+  );
+
+  static TextStyle font12BoldPrimary = TextStyle(
+    fontSize: 12.sp,
+    fontWeight: FontWeight.bold,
+    color: AppColorHelper.primaryColor,
+  );
+
   static TextStyle font10RegularLightPrimary = TextStyle(
     fontSize: 10.sp,
     color: AppColorHelper.lightPrimaryColor,
@@ -18,6 +29,7 @@ abstract class AppTextStyleHelper{
     color: AppColorHelper.primaryColor.withOpacity(0.6),
   );
 
+
   static TextStyle font14RegularPrimary = TextStyle(
     fontSize: 14.sp,
     color: AppColorHelper.primaryColor,
@@ -27,6 +39,12 @@ abstract class AppTextStyleHelper{
     fontSize: 14.sp,
     fontWeight: FontWeight.bold,
     color: AppColorHelper.primaryColor,
+  );
+
+  static TextStyle font14BoldWhite = TextStyle(
+    fontSize: 14.sp,
+    fontWeight: FontWeight.bold,
+    color: AppColorHelper.whiteColor,
   );
 
   static TextStyle font18BoldPrimary = TextStyle(
