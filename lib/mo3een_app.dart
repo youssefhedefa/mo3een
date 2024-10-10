@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mo3een/core/components/widgets/manager_view.dart';
 import 'package:mo3een/core/helpers/theme_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mo3een/core/routing/routing_constances.dart';
+import 'package:mo3een/core/routing/routing_manager.dart';
 
 class Mo3eenApp extends StatelessWidget {
   const Mo3eenApp({super.key});
@@ -21,7 +22,8 @@ class Mo3eenApp extends StatelessWidget {
             locale: context.locale,
             debugShowCheckedModeBanner: false,
             theme: AppThemeHelper.appTheme,
-            home: const ManagerView(),
+            onGenerateRoute: AppRoutingManager().onGenerateRoute,
+            initialRoute: AppRoutingConstances.home,
           );
         },
     );

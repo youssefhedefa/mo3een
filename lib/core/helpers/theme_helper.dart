@@ -13,7 +13,7 @@ abstract class AppThemeHelper{
     ),
   ).copyWith(
     textTheme: ThemeData().textTheme.apply(
-      fontFamily: AppConstants.fontFamilyName,
+      fontFamily: AppConstants.appFontFamilyName,
     ),
   );
 }

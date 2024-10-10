@@ -3,7 +3,8 @@ import 'package:mo3een/features/home/data/models/prayer_model.dart';
 
 abstract class AppConstants{
   static const String translationPath = 'assets/translations';
-  static const String fontFamilyName = 'Almarai';
+  static const String appFontFamilyName = 'Almarai';
+  static const String quranFontFamilyName = 'AmiriQuran';
   static List<PrayerModel> testPrayersList = [
     PrayerModel(
       icon: AppIconHelper.elFajrIcon,
@@ -41,5 +42,8 @@ abstract class AppConstants{
       time: '8:00 م',
       hisTurn: false,
     ),
+  ];
+  static List<String> testTabItemList = [
+    'السور','الاجزاء','الاحزاب','الصفحات'
   ];
 }

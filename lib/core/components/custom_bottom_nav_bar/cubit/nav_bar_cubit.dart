@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_states.dart';
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
+import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
+import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/quran_view.dart';
 
 class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
@@ -43,7 +45,12 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       create: (context) => GetDateCubit()..getInitialDate(),
         child: const HomeView(),
     ),
-    const QuranView(),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => getIt<GetAllSurahsCubit>()..getAllSurahs()),
+          // BlocProvider(create: (context) => getIt<SearchCubit>()),
+        ],
+        child: const QuranView(),),
     Scaffold(body: Container(color: Colors.blue,),),
     Scaffold(body: Container(color: Colors.yellow,),),
     Scaffold(body: Container(color: Colors.purple,),),
