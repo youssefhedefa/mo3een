@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:quran/quran.dart';
 
 
@@ -20,7 +21,12 @@ class PageResult extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              AppRoutingConstances.quranPage,
+              arguments: number,
+            );
+          },
           child: Text(
             'عرض الصفحه',
             style: AppTextStyleHelper.font12RegularPrimary,

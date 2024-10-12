@@ -15,10 +15,10 @@ class NextSalahText extends StatelessWidget {
       children: [
         SvgPicture.asset(
           svgIcon,
-          height: 30,
-          width: 30,
+          height: 28,
+          width: 28,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 6),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

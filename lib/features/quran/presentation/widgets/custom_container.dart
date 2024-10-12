@@ -4,24 +4,28 @@ import 'package:mo3een/core/helpers/color_helper.dart';
 
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key, required this.child});
+  const CustomContainer({super.key, required this.child, this.onTap});
 
   final Widget child;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: REdgeInsets.symmetric(vertical: 10.h),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColorHelper.lightCoffeeColor,
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(
-          color: AppColorHelper.primaryColor,
-          width: 1.4,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: REdgeInsets.symmetric(vertical: 10.h),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppColorHelper.lightCoffeeColor,
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border.all(
+            color: AppColorHelper.primaryColor,
+            width: 1.4,
+          ),
         ),
+        child: child,
       ),
-      child: child,
     );
   }
 }

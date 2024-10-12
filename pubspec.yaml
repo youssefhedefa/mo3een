@@ -27,12 +27,16 @@ dependencies:
       ref: main
   get_it: ^8.0.0
   string_validator: ^0.3.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  hive_generator: any
+  build_runner: any
 
 flutter:
   uses-material-design: true
@@ -135,7 +139,7 @@ flutter:
 
     - family: QCF_P001
       fonts:
-        - asset: assets/fonts/quran/QCF2BSMLfonts\QCF2001.TTF
+        - asset: assets/fonts/quran/QCF2BSMLfonts/QCF2001.ttf
 
     - family: QCF_P002
       fonts:

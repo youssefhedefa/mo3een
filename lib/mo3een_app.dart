@@ -24,6 +24,9 @@ class Mo3eenApp extends StatelessWidget {
             theme: AppThemeHelper.appTheme,
             onGenerateRoute: AppRoutingManager().onGenerateRoute,
             initialRoute: AppRoutingConstances.home,
+            //  home :const QuranPage(
+            //   page: 3,
+            //  ),
           );
         },
     );

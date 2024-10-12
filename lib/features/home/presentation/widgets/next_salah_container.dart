@@ -20,7 +20,7 @@ class NextSalahContainer extends StatelessWidget {
       child: Row(
         children: [
           const Expanded(
-            flex: 65,
+            flex: 60,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
