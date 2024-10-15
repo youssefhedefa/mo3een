@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/sa3dy.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
 import 'package:mo3een/features/quran/domain/entities/sura_entity.dart';
+import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/surah_header.dart';
 import 'package:mo3een/features/quran/presentation/widgets/basmallah.dart';
 import 'package:quran/quran.dart';
@@ -109,36 +112,52 @@ class _QuranBodyState extends State<QuranBody> {
                                   useSafeArea: true,
                                   isScrollControlled: true,
                                   builder: (context) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(24.0),
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: IconButton(
-                                                onPressed: () {},
-                                                icon: Icon(
-                                                  Icons.bookmark_border_outlined,
-                                                  color: AppColorHelper.primaryColor,
-                                                  size: 30.sp,
-                                                ),
+                                    return BlocProvider(
+                                      create: (context) => AddMarkCubit(),
+                                      child: Builder(
+                                        builder: (context) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(24.0),
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.centerLeft,
+                                                    child: IconButton(
+                                                      onPressed: () {
+                                                        context.read<AddMarkCubit>().addMark(
+                                                          mark: QuranMarkModel(
+                                                            id: 0,
+                                                            surah: e["surah"],
+                                                            ayah: i,
+                                                            page: index,
+                                                          ),
+                                                        );
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.bookmark_border_outlined,
+                                                        color: AppColorHelper.primaryColor,
+                                                        size: 30.sp,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    getVerseElsa3dyTranslation(
+                                                      e["surah"],
+                                                      i,
+                                                      verseEndSymbol: true,
+                                                    ),
+                                                    style: AppTextStyleHelper
+                                                        .font14RegularPrimary
+                                                        .copyWith(
+                                                      height: 1.5,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Text(
-                                              getVerseElsa3dyTranslation(
-                                                e["surah"],
-                                                i,
-                                                verseEndSymbol: true,
-                                              ),
-                                              style: AppTextStyleHelper
-                                                  .font14RegularPrimary
-                                                  .copyWith(
-                                                height: 1.5,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          );
+                                        }
                                       ),
                                     );
                                   },
