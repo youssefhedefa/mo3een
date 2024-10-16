@@ -3,12 +3,14 @@ import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 
 class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({super.key, required this.enabled, this.onChanged, this.searchController, this.searchFocusNode});
+  const CustomSearchField({super.key, required this.enabled, this.onChanged, this.searchController, this.searchFocusNode, this.autofocus, this.hintText});
 
   final bool enabled;
   final Function(String)? onChanged;
   final TextEditingController? searchController;
   final FocusNode? searchFocusNode;
+  final bool? autofocus;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +19,9 @@ class CustomSearchField extends StatelessWidget {
       enabled: enabled,
       onChanged: onChanged,
       focusNode: searchFocusNode,
-      autofocus: true,
+      autofocus: autofocus ?? true,
       decoration: InputDecoration(
-        hintText: 'ابحث عن سوره, صفحه, رقم الصفحه او الايه',
+        hintText: hintText ?? 'ابحث عن سوره, صفحه, رقم الصفحه او الايه',
         hintStyle: AppTextStyleHelper.font14RegularPrimary60,
         suffixIcon: const Icon(
             Icons.search,

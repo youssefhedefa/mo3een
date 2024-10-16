@@ -6,6 +6,7 @@ import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/get_all_azkar_cubit.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/search_for_zekr_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
@@ -62,6 +63,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AzkarTabsCubit()),
+        BlocProvider(create: (context) => SearchForZekrCubit()),
         BlocProvider(create: (context) => GetAllAzkarCubit()..getAllAzkar()),
       ],
         child: const AzkarView(),
