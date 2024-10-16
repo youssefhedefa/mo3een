@@ -9,10 +9,11 @@ import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mar
 class AddMarkCubit extends Cubit<AddMarkState> {
   AddMarkCubit() : super(AddMarkInitialState());
 
-  addMark({required QuranMarkModel mark}) async{
+  Future<void> addMark({required QuranMarkModel mark}) async{
     emit(AddMarkLoadingState());
     try {
       var box = Hive.box<QuranMarkModel>(AppBoxConstants.quranMarksBox);
+      await box.clear();
       await box.add(mark);
       emit(AddMarkSuccessState());
     } catch (e) {

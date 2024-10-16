@@ -65,6 +65,12 @@ abstract class AppTextStyleHelper{
     color: AppColorHelper.primaryColor,
   );
 
+  static TextStyle font16SemiBoldPrimary = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColorHelper.primaryColor,
+  );
+
   static TextStyle font16RegularPrimary = TextStyle(
     fontSize: 16.sp,
     color: AppColorHelper.primaryColor,

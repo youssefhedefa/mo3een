@@ -26,7 +26,7 @@ class QuranPageHeader extends StatelessWidget {
           CustomTabItem(title: page.toString(), isSelected: false),
           IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context,true);
             },
             icon: const Icon(
               Icons.arrow_forward_ios,

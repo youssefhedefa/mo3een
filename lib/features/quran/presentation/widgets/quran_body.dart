@@ -9,6 +9,9 @@ import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
 import 'package:mo3een/features/quran/domain/entities/sura_entity.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
+import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_states.dart';
+import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
+import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_states.dart';
 import 'package:mo3een/features/quran/presentation/surah_header.dart';
 import 'package:mo3een/features/quran/presentation/widgets/basmallah.dart';
 import 'package:quran/quran.dart';
@@ -32,8 +35,8 @@ class QuranBody extends StatefulWidget {
 }
 
 class _QuranBodyState extends State<QuranBody> {
-  var highlightVerse;
-  var shouldHighlightText;
+  // var highlightVerse;
+  // var shouldHighlightText;
   List<GlobalKey> richTextKeys = List.generate(
     604, // Replace with the number of pages in your PageView
     (_) => GlobalKey(),
@@ -112,56 +115,120 @@ class _QuranBodyState extends State<QuranBody> {
                                   useSafeArea: true,
                                   isScrollControlled: true,
                                   builder: (context) {
-                                    return BlocProvider(
-                                      create: (context) => AddMarkCubit(),
-                                      child: Builder(
-                                        builder: (context) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(24.0),
-                                            child: SingleChildScrollView(
-                                              child: Column(
-                                                children: [
-                                                  Align(
-                                                    alignment: Alignment.centerLeft,
-                                                    child: IconButton(
-                                                      onPressed: () {
-                                                        context.read<AddMarkCubit>().addMark(
-                                                          mark: QuranMarkModel(
-                                                            id: 0,
-                                                            surah: e["surah"],
-                                                            ayah: i,
-                                                            page: index,
-                                                          ),
+                                    return MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider(
+                                          create: (context) => AddMarkCubit(),
+                                        ),
+                                        BlocProvider(
+                                          create: (context) =>
+                                              GetMarkCubit()..getMark(),
+                                        ),
+                                      ],
+                                      child: Builder(builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(24.0),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'تفسير السعدي للآية رقم $i',
+                                                      style: AppTextStyleHelper
+                                                          .font16BoldPrimary,
+                                                    ),
+                                                    BlocBuilder<GetMarkCubit,
+                                                            GetMarkStates>(
+                                                        builder:
+                                                            (context, state) {
+                                                      if (state
+                                                          is GetMarkSuccessState) {
+                                                        if (state.mark.surah ==
+                                                                e["surah"] &&
+                                                            state.mark.ayah ==
+                                                                i &&
+                                                            state.mark.page ==
+                                                                index) {
+                                                          return IconButton(
+                                                            onPressed: () {},
+                                                            icon: Icon(
+                                                              Icons.bookmark,
+                                                              color: AppColorHelper
+                                                                  .primaryColor,
+                                                              size: 30.sp,
+                                                            ),
+                                                          );
+                                                        }
+                                                        return BlocConsumer<AddMarkCubit,AddMarkState>(
+                                                          builder: (context,addState) {
+                                                            return IconButton(
+                                                              onPressed: () {
+                                                                context
+                                                                    .read<
+                                                                        AddMarkCubit>()
+                                                                    .addMark(
+                                                                      mark:
+                                                                          QuranMarkModel(
+                                                                        id: 0,
+                                                                        surah: e[
+                                                                            "surah"],
+                                                                        ayah: i,
+                                                                        page: index,
+                                                                      ),
+                                                                    );
+                                                              },
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .bookmark_border_outlined,
+                                                                color: AppColorHelper
+                                                                    .primaryColor,
+                                                                size: 30.sp,
+                                                              ),
+                                                            );
+                                                          },
+                                                          listener: (context,addState){
+                                                            if(addState is AddMarkSuccessState){
+                                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                                const SnackBar(
+                                                                  content: Text('تم تحديد العلامة بنجاح'),
+                                                                ),
+                                                              );
+                                                            }
+                                                          },
                                                         );
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.bookmark_border_outlined,
-                                                        color: AppColorHelper.primaryColor,
-                                                        size: 30.sp,
-                                                      ),
-                                                    ),
+                                                      }
+                                                      return const SizedBox();
+                                                    }),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  getVerseElsa3dyTranslation(
+                                                    e["surah"],
+                                                    i,
+                                                    verseEndSymbol: true,
                                                   ),
-                                                  Text(
-                                                    getVerseElsa3dyTranslation(
-                                                      e["surah"],
-                                                      i,
-                                                      verseEndSymbol: true,
-                                                    ),
-                                                    style: AppTextStyleHelper
-                                                        .font14RegularPrimary
-                                                        .copyWith(
-                                                      height: 1.5,
-                                                    ),
+                                                  style: AppTextStyleHelper
+                                                      .font16RegularPrimary
+                                                      .copyWith(
+                                                    height: 1.5,
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        }
-                                      ),
+                                          ),
+                                        );
+                                      }),
                                     );
                                   },
-                                );
+                                ).then((value){
+                                  if(context.mounted){
+                                    context.read<GetMarkCubit>().getMark();
+                                  }
+                                });
                               }
                               ..onLongPressDown = (details) {
                                 setState(() {
@@ -172,7 +239,7 @@ class _QuranBodyState extends State<QuranBody> {
                                 setState(() {
                                   selectedSpan = "";
                                 });
-                                print("finished long press");
+                                //print("finished long press");
                               }
                               ..onLongPressCancel = () => setState(() {
                                     selectedSpan = "";

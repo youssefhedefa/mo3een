@@ -13,7 +13,7 @@ class SearchCubit extends Cubit<SearchStates> {
   final QuranRepo repo;
 
   TextEditingController searchController = TextEditingController();
-
+  FocusNode searchFocusNode = FocusNode();
   Future<List<SuraEntity>> getAllSurahs() async {
     List<SuraEntity> surahs = await repo.getAllSuras();
     return surahs;

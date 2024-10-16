@@ -8,6 +8,7 @@ import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit
 import 'package:mo3een/features/home/presentation/home.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
+import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/quran_tabs_cubit/quran_tabs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/quran_view.dart';
 
@@ -52,6 +53,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
           BlocProvider(create: (context) => getIt<GetAllSurahsCubit>()..getAllSurahs()),
           BlocProvider(create: (context) => QuranTabsCubit(),),
           BlocProvider(create: (context) => AddMarkCubit(),),
+          BlocProvider(create: (context) => GetMarkCubit()..getMark(),),
         ],
         child: const QuranView(),),
     Scaffold(body: Container(color: Colors.blue,),),

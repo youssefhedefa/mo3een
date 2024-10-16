@@ -17,6 +17,7 @@ class InitialSearchWidget extends StatelessWidget {
             context.read<SearchCubit>().search(query: query);
           },
           searchController: context.read<SearchCubit>().searchController,
+          searchFocusNode: context.read<SearchCubit>().searchFocusNode,
         ),
         SizedBox(height: 16.h),
       ],
