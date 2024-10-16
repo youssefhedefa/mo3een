@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/add_zekr_to_saved_cubit/add_zekr_to_saved_cubit.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/delete_zekr_from_saved_cubit/delete_zekr_from_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_states.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/custom_zekr_item.dart';
@@ -23,7 +24,7 @@ class CustomAzkarList extends StatelessWidget {
               builder: (context, state) {
             if (state is GetAllSavedAzkarSuccessState) {
               return GestureDetector(
-                onTap: (){
+                onTap: () {
                   log(containsAzkar(state.azkarList, azkar[index]).toString());
                 },
                 child: CustomZekrItem(
@@ -31,7 +32,18 @@ class CustomAzkarList extends StatelessWidget {
                   isFavorite: containsAzkar(state.azkarList, azkar[index]),
                   onTap: () {
                     if (state.azkarList.contains(azkar[index])) {
-                      // delete
+                      context
+                          .read<DeleteZekrFromSavedCubit>()
+                          .deleteZekrFromSaved(zekr: azkar[index])
+                          .then(
+                        (_) {
+                          if (context.mounted) {
+                            context
+                                .read<GetAllSavedAzkarCubit>()
+                                .getAllSavedAzkar();
+                          }
+                        },
+                      );
                       log('message');
                     } else {
                       context
@@ -61,6 +73,7 @@ class CustomAzkarList extends StatelessWidget {
       ),
     );
   }
+
   bool containsAzkar(List<AzkarModel> azkarList, AzkarModel azkar) {
     return azkarList.any((zkr) => zkr.id == azkar.id);
   }
