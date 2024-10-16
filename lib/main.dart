@@ -8,6 +8,7 @@ import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/utilities/bloc_observer.dart';
 import 'package:mo3een/core/utilities/box_constants.dart';
 import 'package:mo3een/core/utilities/constants.dart';
+import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
 import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
 import 'package:mo3een/mo3een_app.dart';
 
@@ -16,11 +17,17 @@ void main() async {
   changeSystemUiOverlayStyle();
   Bloc.observer = MyBlocObserver();
   await Hive.initFlutter();
+
   Hive.registerAdapter(QuranMarkModelAdapter());
+  Hive.registerAdapter(AzkarModelAdapter());
+  Hive.registerAdapter(ZekrItemAdapter());
+
   await Future.wait([
     ScreenUtil.ensureScreenSize(),
-  EasyLocalization.ensureInitialized(),
+    EasyLocalization.ensureInitialized(),
     Hive.openBox<QuranMarkModel>(AppBoxConstants.quranMarksBox),
+    Hive.openBox<AzkarModel>(AppBoxConstants.azkarBox),
+    Hive.openBox<ZekrItem>(AppBoxConstants.zekrItemBox),
   ]);
   setupDependencyInjection();
   runApp(
@@ -33,7 +40,7 @@ void main() async {
   );
 }
 
-changeSystemUiOverlayStyle(){
+changeSystemUiOverlayStyle() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.dark,

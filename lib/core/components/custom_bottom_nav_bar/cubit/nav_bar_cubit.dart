@@ -4,8 +4,10 @@ import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_state
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/add_zekr_to_saved_cubit/add_zekr_to_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/get_all_azkar_cubit.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/search_for_zekr_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
@@ -65,6 +67,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
         BlocProvider(create: (context) => AzkarTabsCubit()),
         BlocProvider(create: (context) => SearchForZekrCubit()),
         BlocProvider(create: (context) => GetAllAzkarCubit()..getAllAzkar()),
+        BlocProvider(create: (context) => AddZekrToSavedCubit()),
+        BlocProvider(create: (context) => GetAllSavedAzkarCubit()..getAllSavedAzkar()),
       ],
         child: const AzkarView(),
     ),

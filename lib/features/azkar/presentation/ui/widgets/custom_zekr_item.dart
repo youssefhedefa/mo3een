@@ -7,9 +7,11 @@ import 'package:mo3een/features/quran/presentation/widgets/custom_container.dart
 
 
 class CustomZekrItem extends StatelessWidget {
-  const CustomZekrItem({super.key, required this.zekr});
+  const CustomZekrItem({super.key, required this.zekr, this.onTap, this.isFavorite});
 
   final AzkarModel zekr;
+  final void Function()? onTap;
+  final bool? isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,9 @@ class CustomZekrItem extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: onTap,
               icon: Icon(
-                Icons.bookmark_border,
+                isFavorite ?? false ? Icons.bookmark : Icons.bookmark_border,
                 color: AppColorHelper.primaryColor,
                 size: 30.sp,
               ),
