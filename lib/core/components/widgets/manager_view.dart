@@ -10,7 +10,7 @@ class ManagerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BottomNavBarCubit()..changeNavBarItem(1),
+      create: (context) => BottomNavBarCubit()..changeNavBarItem(2),
       child: Builder(
         builder: (context) {
           return BlocBuilder<BottomNavBarCubit, BottomNavBarStates>(

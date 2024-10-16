@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
-import 'package:mo3een/features/quran/presentation/cubits/search_cubit/search_cubit.dart';
 
 class CustomSearchField extends StatelessWidget {
   const CustomSearchField({super.key, required this.enabled, this.onChanged, this.searchController, this.searchFocusNode});

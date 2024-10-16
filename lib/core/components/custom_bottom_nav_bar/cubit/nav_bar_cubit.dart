@@ -4,6 +4,8 @@ import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_state
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
+import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
@@ -56,7 +58,12 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
           BlocProvider(create: (context) => GetMarkCubit()..getMark(),),
         ],
         child: const QuranView(),),
-    Scaffold(body: Container(color: Colors.blue,),),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AzkarTabsCubit()),
+      ],
+        child: const AzkarView(),
+    ),
     Scaffold(body: Container(color: Colors.yellow,),),
     Scaffold(body: Container(color: Colors.purple,),),
   ];

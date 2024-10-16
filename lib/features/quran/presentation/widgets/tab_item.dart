@@ -16,6 +16,7 @@ class CustomTabItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 6.h),
         decoration: BoxDecoration(
           color: isSelected ? AppColorHelper.primaryColor : AppColorHelper.whiteColor,
