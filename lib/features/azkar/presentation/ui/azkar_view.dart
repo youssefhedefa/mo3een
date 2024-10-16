@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
+import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_states.dart';
+import 'package:mo3een/features/azkar/presentation/ui/widgets/all_azkar_list.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/tabs_list.dart';
 
 class AzkarView extends StatelessWidget {
@@ -18,13 +22,25 @@ class AzkarView extends StatelessWidget {
               width: double.infinity,
             ),
             Text(
-                'الأذكار',
+              'الأذكار',
               style: AppTextStyleHelper.font16BoldPrimary,
             ),
-             SizedBox(
+            SizedBox(
               height: 40.h,
             ),
             const TabsList(),
+            SizedBox(
+              height: 24.h,
+            ),
+            BlocBuilder<AzkarTabsCubit, AzkarTabsState>(
+              builder: (context, state) {
+                if (state is AllAzkarTab) {
+                  return const AllAzkarList();
+                }else{
+                  return const SizedBox();
+                }
+              },
+            ),
           ],
         ),
       ),
