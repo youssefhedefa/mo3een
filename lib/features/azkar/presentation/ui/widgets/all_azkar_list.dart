@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/get_all_azkar_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/get_all_azkar_states.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
+import 'package:mo3een/features/azkar/presentation/ui/widgets/custom_azkar_list.dart';
 
 class AllAzkarList extends StatelessWidget {
   const AllAzkarList({super.key});
