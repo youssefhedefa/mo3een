@@ -13,6 +13,7 @@ import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
+import 'package:mo3een/features/qibla/presentation/ui/qibla_view.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
@@ -80,7 +81,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       create: (context) => GetSep7aAzkarCubit()..getSep7aAzkar(),
         child: const Sep7aView(),
     ),
-    Scaffold(body: Container(color: Colors.purple,),),
+    const QiblaView(),
   ];
 
 

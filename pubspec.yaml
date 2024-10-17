@@ -37,6 +37,8 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider_android: any
   shared_preferences_android: any
+  flutter_qiblah: ^3.0.4
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
