@@ -4,6 +4,8 @@ import 'package:mo3een/core/components/widgets/manager_view.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/routing/custom_page_route.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
+import 'package:mo3een/features/azkar/data/model/zekr_item_model.dart';
+import 'package:mo3een/features/azkar/presentation/ui/azkar_data.dart';
 import 'package:mo3een/features/quran/data/models/quran_page_model.dart';
 import 'package:mo3een/features/quran/presentation/cubits/search_cubit/search_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/search_tabs_cubit/search_tabs_cubit.dart';
@@ -33,11 +35,19 @@ class AppRoutingManager {
             child: const SearchView(),
           ),
         );
-        case AppRoutingConstances.quranPage:
+      case AppRoutingConstances.quranPage:
         final page = settings.arguments as QuranPageModel;
         return CustomPageRoute(
           axisDirection: AxisDirection.left,
           child: QuranPage(page: page),
+        );
+      case AppRoutingConstances.zekrPage:
+        final zekr = settings.arguments as ZekrItemModel;
+        return CustomPageRoute(
+          axisDirection: AxisDirection.left,
+          child: AzkarDataView(
+            zekr: zekr,
+          ),
         );
       default:
         return null;

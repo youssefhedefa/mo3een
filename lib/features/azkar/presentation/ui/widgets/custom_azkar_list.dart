@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
+import 'package:mo3een/features/azkar/data/model/zekr_item_model.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/add_zekr_to_saved_cubit/add_zekr_to_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/delete_zekr_from_saved_cubit/delete_zekr_from_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_cubit.dart';
@@ -25,7 +27,10 @@ class CustomAzkarList extends StatelessWidget {
             if (state is GetAllSavedAzkarSuccessState) {
               return GestureDetector(
                 onTap: () {
-                  log(containsAzkar(state.azkarList, azkar[index]).toString());
+                  Navigator.pushNamed(
+                      context, AppRoutingConstances.zekrPage,
+                    arguments: ZekrItemModel(zekrName: azkar[index].category, zekr: azkar[index].array),
+                  );
                 },
                 child: CustomZekrItem(
                   zekr: azkar[index],
