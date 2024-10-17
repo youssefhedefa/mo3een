@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mo3een/core/helpers/icon_helper.dart';
-import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/sep7a_zekr_container.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/zekr_data_view_title.dart';
+import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/add_sep7a_zekr_button.dart';
+import 'package:mo3een/features/sep7a/presentation/ui/widgets/sep7a_button.dart';
 
-class Sep7aCounter extends StatelessWidget {
-  const Sep7aCounter({super.key});
+class Sep7aCounter extends StatefulWidget {
+  const Sep7aCounter({super.key, required this.zkr});
+
+  final Sep7aZekrModel zkr;
+
+  @override
+  State<Sep7aCounter> createState() => _Sep7aCounterState();
+}
+
+class _Sep7aCounterState extends State<Sep7aCounter> {
+
+  int currentCount = 0;
+  int cycleNumber = 0;
+  int totalCount = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,50 +38,44 @@ class Sep7aCounter extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            const Sep7aZekrContainer(),
+            Sep7aZekrContainer(
+              title: widget.zkr.title,
+              count: widget.zkr.count,
+              currentCount: currentCount,
+              cycleNumber: cycleNumber,
+              totalCount: totalCount,
+            ),
             const SizedBox(
               height: 24,
             ),
             AddSep7aZekrButton(
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  currentCount = 0;
+                  cycleNumber = 0;
+                  totalCount = 0;
+                });
+              },
               title: 'البدء من جديد',
             ),
             const Spacer(),
-            const Sep7aButton(),
+            Sep7aButton(
+              onPressed: () {
+                setState(() {
+                  currentCount++;
+                  totalCount++;
+                  if (currentCount == widget.zkr.count) {
+                    cycleNumber++;
+                    currentCount = 0;
+                  }
+                });
+              },
+            ),
             const SizedBox(
               height: 24,
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Sep7aButton extends StatelessWidget {
-  const Sep7aButton({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () {},
-      splashColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      focusElevation: 0,
-      highlightColor: Colors.transparent,
-      elevation: 0,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          SvgPicture.asset(
-            AppIconHelper.sep7aButtonIcon,
-          ),
-          Text(
-            'سبح',
-            style: AppTextStyleHelper.font14BoldWhite,
-          ),
-        ],
       ),
     );
   }

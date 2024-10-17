@@ -17,8 +17,8 @@ class Sep7aZekrCounter extends StatelessWidget {
       children: [
         Container(
           padding: REdgeInsets.all(8.0),
-          width: 50,
-          height: 50,
+          width: 50.w,
+          height: 50.h,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),

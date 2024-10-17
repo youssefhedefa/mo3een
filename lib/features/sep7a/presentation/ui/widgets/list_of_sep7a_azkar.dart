@@ -15,7 +15,7 @@ class ListOfSep7aAzkar extends StatelessWidget {
           title: AppConstants.initialSep7aAzkar[index].title,
           count: AppConstants.initialSep7aAzkar[index].count.toString(),
           onTap: (){
-            Navigator.pushNamed(context, AppRoutingConstances.sep7aCounter);
+            Navigator.pushNamed(context, AppRoutingConstances.sep7aCounter,arguments: AppConstants.initialSep7aAzkar[index]);
           },
         ),
         separatorBuilder: (context, index) => const SizedBox(

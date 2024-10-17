@@ -5,7 +5,13 @@ import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/sep7a_zekr_counter.dart';
 
 class Sep7aZekrContainer extends StatelessWidget {
-  const Sep7aZekrContainer({super.key});
+  const Sep7aZekrContainer({super.key, required this.title, required this.count, required this.currentCount, required this.cycleNumber, required this.totalCount});
+
+  final String title;
+  final int count;
+  final int currentCount;
+  final int cycleNumber;
+  final int totalCount;
 
   @override
   Widget build(BuildContext context) {
@@ -21,31 +27,31 @@ class Sep7aZekrContainer extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'سبحان الله وبحمده سبحان الله العظيم',
+            title,
             textAlign: TextAlign.center,
             style: AppTextStyleHelper.font18BoldPrimary,
           ),
           const SizedBox(
             height: 24,
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Sep7aZekrCounter(
                 title: 'عدد الحبات',
-                count: '100',
+                count: count.toString(),
               ),
               Sep7aZekrCounter(
                 title: 'العدد الحالي',
-                count: '55',
+                count: currentCount.toString(),
               ),
               Sep7aZekrCounter(
                 title: 'عدد الدورات',
-                count: '1',
+                count: cycleNumber.toString(),
               ),
               Sep7aZekrCounter(
                 title: 'الاجمالي',
-                count: '1',
+                count: totalCount.toString(),
               ),
             ],
           ),
