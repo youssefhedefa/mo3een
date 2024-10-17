@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
+import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 
 abstract class AppConstants{
   static const String translationPath = 'assets/translations';
@@ -74,5 +77,43 @@ abstract class AppConstants{
     'الجزء الثامن والعشرون',
     'الجزء التاسع والعشرون',
     'الجزء الثلاثون',
+  ];
+  static List<Sep7aZekrModel> initialSep7aAzkar = [
+    Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'سبحان الله',
+        count: 33,
+    ),
+     Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'الحمد لله',
+        count: 33,
+    ),
+     Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'الله اكبر',
+        count: 33,
+    ),
+     Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'لا اله الا الله',
+        count: 33,
+    ),
+     Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'لا حول ولا قوة الا بالله ',
+        count: 100,
+    ),
+     Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'استغفر الله العظيم',
+        count: 33,
+    ),
+    Sep7aZekrModel(
+        id: Random().nextInt(1000),
+        title: 'اللهم انك عفو تحب العفو فاعف عني ',
+        count: 33,
+    ),
+
   ];
 }

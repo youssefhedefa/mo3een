@@ -14,6 +14,8 @@ abstract class AppIconHelper {
   static const String elMa8rebIcon = 'assets/icons/mgrp.svg';
   static const String el3e4a2Icon = 'assets/icons/ashaa.svg';
   static const String numberIcon = 'assets/icons/number_shower.svg';
+  static const String editIcon = 'assets/icons/edit_icon.svg';
+  static const String sep7aButtonIcon = 'assets/icons/sepha_button.svg';
 
 
 }

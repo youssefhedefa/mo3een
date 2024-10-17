@@ -11,6 +11,7 @@ import 'package:mo3een/features/quran/presentation/cubits/search_cubit/search_cu
 import 'package:mo3een/features/quran/presentation/cubits/search_tabs_cubit/search_tabs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/quran_page.dart';
 import 'package:mo3een/features/quran/presentation/search_view.dart';
+import 'package:mo3een/features/sep7a/presentation/ui/sep7a_counter.dart';
 
 class AppRoutingManager {
   Route? onGenerateRoute(RouteSettings settings) {
@@ -48,6 +49,11 @@ class AppRoutingManager {
           child: AzkarDataView(
             zekr: zekr,
           ),
+        );
+      case AppRoutingConstances.sep7aCounter:
+        return CustomPageRoute(
+          axisDirection: AxisDirection.left,
+          child: const Sep7aCounter(),
         );
       default:
         return null;

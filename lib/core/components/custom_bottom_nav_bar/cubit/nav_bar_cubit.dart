@@ -18,6 +18,7 @@ import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/g
 import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/quran_tabs_cubit/quran_tabs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/quran_view.dart';
+import 'package:mo3een/features/sep7a/presentation/ui/sep7a_view.dart';
 
 class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
   BottomNavBarCubit() : super(BottomNavBarInitialState());
@@ -74,7 +75,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       ],
         child: const AzkarView(),
     ),
-    Scaffold(body: Container(color: Colors.yellow,),),
+    const Sep7aView(),
     Scaffold(body: Container(color: Colors.purple,),),
   ];
 
