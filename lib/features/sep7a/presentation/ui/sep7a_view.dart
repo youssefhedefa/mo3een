@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/features/sep7a/presentation/cubit/add_sep7a_zekr_cubit/add_sep7a_zekr_cubit.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/add_sep7a_zekr_button.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/custom_bottom_sheet.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/list_of_sep7a_azkar.dart';
@@ -11,6 +13,7 @@ class Sep7aView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
@@ -50,9 +53,14 @@ class Sep7aView extends StatelessWidget {
           topRight: Radius.circular(16),
         ),
       ),
+      useSafeArea: true,
+      isScrollControlled: true,
       context: context,
       builder: (context) {
-        return const CustomBottomSheet();
+        return BlocProvider(
+          create: (context) => AddSep7aZekrCubit(),
+            child: const CustomBottomSheet()
+        );
       },
     );
   }

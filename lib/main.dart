@@ -10,6 +10,7 @@ import 'package:mo3een/core/utilities/box_constants.dart';
 import 'package:mo3een/core/utilities/constants.dart';
 import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
 import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
+import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/mo3een_app.dart';
 
 void main() async {
@@ -21,6 +22,7 @@ void main() async {
   Hive.registerAdapter(QuranMarkModelAdapter());
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());
+  Hive.registerAdapter(Sep7aZekrModelAdapter());
 
   await Future.wait([
     ScreenUtil.ensureScreenSize(),
@@ -28,6 +30,7 @@ void main() async {
     Hive.openBox<QuranMarkModel>(AppBoxConstants.quranMarksBox),
     Hive.openBox<AzkarModel>(AppBoxConstants.azkarBox),
     Hive.openBox<ZekrItem>(AppBoxConstants.zekrItemBox),
+    Hive.openBox<Sep7aZekrModel>(AppBoxConstants.sep7aZekrBox),
   ]);
   setupDependencyInjection();
   runApp(

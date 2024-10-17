@@ -11,9 +11,15 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       keyboardType: type ?? TextInputType.text,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'الرجاء ادخال البيانات';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColorHelper.lightCoffeeColor,
