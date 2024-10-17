@@ -12,6 +12,7 @@ import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cu
 import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/search_for_zekr_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_random_verse_cubit/get_random_verse_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
 import 'package:mo3een/features/qibla/presentation/ui/qibla_view.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
@@ -54,9 +55,12 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
   ];
 
   List<Widget> screens =[
-    BlocProvider(
-      create: (context) => GetDateCubit()..getInitialDate(),
-        child: const HomeView(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => GetDateCubit()..getInitialDate()),
+        BlocProvider(create: (context) => GetRandomVerseCubit()..getRandomVerseCall()),
+      ],
+      child: const HomeView(),
     ),
     MultiBlocProvider(
         providers: [
