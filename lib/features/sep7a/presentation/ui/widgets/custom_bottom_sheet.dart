@@ -70,6 +70,13 @@ class CustomBottomSheet extends StatelessWidget {
                   context.read<AddSep7aZekrCubit>().countController.text),
             ),
           );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('تم اضافة الذكر بنجاح'),
+        ),
+      );
+      Navigator.pop(context);
     }
     else{
       ScaffoldMessenger.of(context).showSnackBar(

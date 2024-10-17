@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/features/sep7a/presentation/cubit/add_sep7a_zekr_cubit/add_sep7a_zekr_cubit.dart';
+import 'package:mo3een/features/sep7a/presentation/cubit/get_sep7a_azkar_cubit/get_sep7a_azkar_cubit.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/add_sep7a_zekr_button.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/custom_bottom_sheet.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/list_of_sep7a_azkar.dart';
@@ -62,6 +63,10 @@ class Sep7aView extends StatelessWidget {
             child: const CustomBottomSheet()
         );
       },
-    );
+    ).then((_){
+      if(context.mounted){
+        context.read<GetSep7aAzkarCubit>().getSep7aAzkar();
+      }
+    });
   }
 }
