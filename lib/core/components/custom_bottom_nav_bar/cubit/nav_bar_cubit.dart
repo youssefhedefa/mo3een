@@ -11,6 +11,7 @@ import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/ge
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/search_for_zekr_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_current_location_cubit/get_current_location_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_random_verse_cubit/get_random_verse_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
@@ -59,6 +60,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       providers: [
         BlocProvider(create: (context) => GetDateCubit()..getInitialDate()),
         BlocProvider(create: (context) => GetRandomVerseCubit()..getRandomVerseCall()),
+        BlocProvider(create: (context) => GetCurrentLocationCubit()..getLocation()),
       ],
       child: const HomeView(),
     ),
