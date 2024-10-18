@@ -4,11 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mo3een/core/components/models/current_postion.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/utilities/bloc_observer.dart';
 import 'package:mo3een/core/utilities/box_constants.dart';
 import 'package:mo3een/core/utilities/constants.dart';
 import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
+import 'package:mo3een/features/home/data/models/prayer_model.dart';
 import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
 import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/mo3een_app.dart';
@@ -23,6 +25,8 @@ void main() async {
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());
   Hive.registerAdapter(Sep7aZekrModelAdapter());
+  Hive.registerAdapter(PrayerModelAdapter());
+  Hive.registerAdapter(CurrentPositionAdapter());
 
   await Future.wait([
     ScreenUtil.ensureScreenSize(),
@@ -31,8 +35,10 @@ void main() async {
     Hive.openBox<AzkarModel>(AppBoxConstants.azkarBox),
     Hive.openBox<ZekrItem>(AppBoxConstants.zekrItemBox),
     Hive.openBox<Sep7aZekrModel>(AppBoxConstants.sep7aZekrBox),
+    Hive.openBox<PrayerModel>(AppBoxConstants.prayersBox),
+    Hive.openBox<CurrentPosition>(AppBoxConstants.currentPositionBox),
+    setupDependencyInjection(),
   ]);
-  setupDependencyInjection();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('ar')],

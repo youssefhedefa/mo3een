@@ -3,4 +3,6 @@ abstract class AppBoxConstants{
   static const String azkarBox = 'azkar_box';
   static const String zekrItemBox = 'zekr_item_box';
   static const String sep7aZekrBox = 'sep7a_zekr_box';
+  static const String prayersBox = 'prayers_box';
+  static const String currentPositionBox = 'current_position_box';
 }
