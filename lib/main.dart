@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mo3een/core/components/models/current_postion.dart';
+import 'package:mo3een/core/helpers/notify_helper.dart';
+import 'package:mo3een/core/helpers/permission_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/utilities/bloc_observer.dart';
 import 'package:mo3een/core/utilities/box_constants.dart';
@@ -19,15 +21,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   changeSystemUiOverlayStyle();
   Bloc.observer = MyBlocObserver();
+  await AppPermissionHelper.checkLocationPermission();
+  await AppPermissionHelper.checkNotifyPermission();
+  AppNotifyHelper.initNotify();
   await Hive.initFlutter();
-
   Hive.registerAdapter(QuranMarkModelAdapter());
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());
   Hive.registerAdapter(Sep7aZekrModelAdapter());
   Hive.registerAdapter(PrayerModelAdapter());
   Hive.registerAdapter(CurrentPositionAdapter());
-
   await Future.wait([
     ScreenUtil.ensureScreenSize(),
     EasyLocalization.ensureInitialized(),

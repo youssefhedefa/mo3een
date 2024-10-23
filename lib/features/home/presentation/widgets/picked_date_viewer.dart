@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/components/widgets/custom_loading.dart';
+import 'package:mo3een/core/helpers/notify_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_states.dart';
@@ -23,9 +24,12 @@ class PickedDateViewer extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  context
-                      .read<GetDateCubit>()
-                      .getPreviousDate(state.pickedDate);
+
+                  AppNotifyHelper.sendNotify();
+
+                  // context
+                  //     .read<GetDateCubit>()
+                  //     .getPreviousDate(state.pickedDate);
                 },
               ),
               Expanded(
@@ -54,7 +58,8 @@ class PickedDateViewer extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.arrow_forward_ios),
                 onPressed: () {
-                  context.read<GetDateCubit>().getNextDate(state.pickedDate);
+                  AppNotifyHelper.sendNotify();
+                  //context.read<GetDateCubit>().getNextDate(state.pickedDate);
                 },
               ),
             ],

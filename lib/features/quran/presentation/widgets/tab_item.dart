@@ -5,11 +5,12 @@ import 'package:mo3een/core/helpers/text_style_helper.dart';
 
 
 class CustomTabItem extends StatelessWidget {
-  const CustomTabItem({super.key, required this.title, required this.isSelected, this.onTap});
+  const CustomTabItem({super.key, required this.title, required this.isSelected, this.onTap, this.isActive});
 
   final String title;
   final bool isSelected;
   final Function()? onTap;
+  final bool? isActive;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class CustomTabItem extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 6.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColorHelper.primaryColor : AppColorHelper.whiteColor,
+          color: isSelected ? ( isActive ?? true ? AppColorHelper.primaryColor : AppColorHelper.lightPrimaryColor) : AppColorHelper.whiteColor,
           borderRadius: BorderRadius.circular(8.r),
           border: Border.all(
             color: AppColorHelper.primaryColor,

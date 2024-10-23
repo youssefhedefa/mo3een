@@ -8,9 +8,10 @@ import 'package:mo3een/features/azkar/presentation/ui/widgets/share_button.dart'
 
 
 class ZekItemShower extends StatelessWidget {
-  const ZekItemShower({super.key, required this.zekr, required this.count});
+  const ZekItemShower({super.key, required this.zekr, required this.count, required this.zekrIndex});
 
   final String zekr;
+  final int zekrIndex;
   final int count;
 
   @override
@@ -40,7 +41,8 @@ class ZekItemShower extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               RepeatButton(
-                count: count,
+                index: zekrIndex,
+                maxCount: count,
               ),
               const ShareButton(),
             ],

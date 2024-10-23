@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:geolocator/geolocator.dart';
+import 'package:mo3een/core/components/models/current_postion.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
 import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
@@ -8,41 +10,59 @@ abstract class AppConstants{
   static const String translationPath = 'assets/translations';
   static const String appFontFamilyName = 'Almarai';
   static const String quranFontFamilyName = 'AmiriQuran';
+  static CurrentPosition cachedPosition = CurrentPosition(
+    address: 'القاهره, مصر',
+    latitude: 30.0444,
+    longitude: 31.2357,
+    lastUpdate: DateTime.now().subtract(const Duration(days: 4)),
+  );
+  static Position defaultPosition = Position(
+    latitude: 30.0444,
+    longitude: 31.2357,
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    timestamp: DateTime.now(),
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
   static List<PrayerModel> testPrayersList = [
     PrayerModel(
       icon: AppIconHelper.elFajrIcon,
       prayer: 'الفجر',
-      time: '4:30 ص',
+      time: '04:30',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el4rokIcon,
       prayer: 'الشروق',
-      time: '5:45 ص',
+      time: '05:45',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.elZohrIcon,
       prayer: 'الظهر',
-      time: '12:30 م',
+      time: '12:30',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el3asrIcon,
       prayer: 'العصر',
-      time: '3:45 م',
-      hisTurn: true,
+      time: '15:45',
+      hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.elMa8rebIcon,
       prayer: 'المغرب',
-      time: '6:30 م',
+      time: '18:30',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el3e4a2Icon,
       prayer: 'العشاء',
-      time: '8:00 م',
+      time: '20:00',
       hisTurn: false,
     ),
   ];

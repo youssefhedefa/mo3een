@@ -32,6 +32,7 @@ class AzkarDataView extends StatelessWidget {
                   return ZekItemShower(
                     zekr: zekr.zekr[index].text,
                     count: zekr.zekr[index].count,
+                    zekrIndex: index,
                   );
                 },
                 separatorBuilder: (context, index) {

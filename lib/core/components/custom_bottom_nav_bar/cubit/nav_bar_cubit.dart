@@ -61,7 +61,7 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       providers: [
         BlocProvider(create: (context) => GetDateCubit()..getInitialDate()),
         BlocProvider(create: (context) => GetRandomVerseCubit()..getRandomVerseCall()),
-        BlocProvider(create: (context) => GetCurrentLocationCubit()..getLocation()),
+        BlocProvider(create: (context) => getIt<GetCurrentLocationCubit>()..getLocation()),
         BlocProvider(create: (context) => getIt<GetPrayersTimesCubit>()),
       ],
       child: const HomeView(),

@@ -12,33 +12,17 @@ class CurrentLocationMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetCurrentLocationCubit,GetCurrentLocationState>(
-      builder: (context,state) {
-        if(state is GetCurrentLocationLoading){
-          return const Center(
-            child: CustomLoadingIndicator(),
-          );
-        }
-        if(state is GetCurrentLocationFailed){
-          return Row(
-            children: [
-              const Icon(
-                Icons.location_on,
-                color: AppColorHelper.primaryColor,
-                size: 24,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                'موقعك الحالي : غير متوفر',
-                style: AppTextStyleHelper.font14RegularPrimary,
-              ),
-            ],
-          );
-        }
-        else if(state is GetCurrentLocationSuccess){
-          return SizedBox(
-            height: 60.h,
-            child: Row(
+    return SizedBox(
+      height: 60.h,
+      child: BlocBuilder<GetCurrentLocationCubit,GetCurrentLocationState>(
+        builder: (context,state) {
+          if(state is GetCurrentLocationLoading){
+            return const Center(
+              child: CustomLoadingIndicator(),
+            );
+          }
+          if(state is GetCurrentLocationFailed){
+            return Row(
               children: [
                 const Icon(
                   Icons.location_on,
@@ -47,15 +31,33 @@ class CurrentLocationMarker extends StatelessWidget {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  state.address,
+                  'موقعك الحالي : غير متوفر',
                   style: AppTextStyleHelper.font14RegularPrimary,
                 ),
               ],
-            ),
+            );
+          }
+          else if(state is GetCurrentLocationSuccess){
+            return Row(
+              children: [
+                const Icon(
+                  Icons.location_on,
+                  color: AppColorHelper.primaryColor,
+                  size: 24,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  state.position.address,
+                  style: AppTextStyleHelper.font14RegularPrimary,
+                ),
+              ],
+            );
+          }
+          return SizedBox(
+            height: 60.h,
           );
         }
-        return const SizedBox();
-      }
+      ),
     );
   }
 }
