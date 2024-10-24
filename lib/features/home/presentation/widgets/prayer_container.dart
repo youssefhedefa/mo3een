@@ -37,11 +37,18 @@ class PrayerContainer extends StatelessWidget {
           ),
           const Spacer(),
           Text(
-            time,
+            timeFormatting(time: time),
             style: hisTurn ? AppTextStyleHelper.font14BoldWhite: AppTextStyleHelper.font14BoldPrimary,
           ),
         ],
       ),
     );
+  }
+  timeFormatting({required String time}){
+    final hour = int.parse(time.split(':')[0]);
+    final minute = time.split(':')[1];
+    final period = hour >= 12 ? 'م' : 'ص';
+    final formattedHour = hour > 12 ? hour - 12 : hour;
+    return '$formattedHour:$minute $period';
   }
 }
