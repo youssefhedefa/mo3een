@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/features/azkar/presentation/ui/widgets/sep7a_zekr_container.dart';
-import 'package:mo3een/features/azkar/presentation/ui/widgets/zekr_data_view_title.dart';
 import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/add_sep7a_zekr_button.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/widgets/sep7a_button.dart';
+import 'package:mo3een/features/sep7a/presentation/ui/widgets/sep7a_custom_app_bar.dart';
 
 class Sep7aCounter extends StatefulWidget {
   const Sep7aCounter({super.key, required this.zkr});
@@ -32,8 +32,11 @@ class _Sep7aCounterState extends State<Sep7aCounter> {
               height: 66,
               width: double.infinity,
             ),
-            const ZekrDataViewTitle(
-              zekrName: 'سبحة الكترونية',
+            // const ZekrDataViewTitle(
+            //   zekrName: 'سبحة الكترونية',
+            // ),
+            Sep7aCustomAppBar(
+              zekr: widget.zkr,
             ),
             const SizedBox(
               height: 24,

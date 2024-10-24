@@ -41,7 +41,7 @@ class PickedDateViewer extends StatelessWidget {
                       lastDate: DateTime(2100),
                       initialDate: DateTime.now(),
                     ).then((value) {
-                      if (value != null) {
+                      if (value != null && context.mounted) {
                         context
                             .read<GetDateCubit>()
                             .getDateFromPicker(value);

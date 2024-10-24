@@ -65,6 +65,18 @@ abstract class AppTextStyleHelper{
     color: AppColorHelper.primaryColor,
   );
 
+  static TextStyle font16BoldBlack = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  );
+
+  static TextStyle font16BoldWhite = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  );
+
   static TextStyle font16SemiBoldPrimary = TextStyle(
     fontSize: 16.sp,
     fontWeight: FontWeight.w700,

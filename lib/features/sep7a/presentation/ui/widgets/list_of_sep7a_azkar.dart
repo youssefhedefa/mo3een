@@ -22,7 +22,14 @@ class ListOfSep7aAzkar extends StatelessWidget {
               count: state.azkar[index].count.toString(),
               onTap: () {
                 Navigator.pushNamed(context, AppRoutingConstances.sep7aCounter,
-                    arguments: state.azkar[index]);
+                        arguments: state.azkar[index])
+                    .then(
+                  (_) {
+                    if (context.mounted) {
+                      context.read<GetSep7aAzkarCubit>().getSep7aAzkar();
+                    }
+                  },
+                );
               },
             ),
             separatorBuilder: (context, index) => const SizedBox(

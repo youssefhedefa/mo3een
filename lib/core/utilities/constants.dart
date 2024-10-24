@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:geolocator/geolocator.dart';
 import 'package:mo3een/core/components/models/current_postion.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
@@ -100,37 +98,37 @@ abstract class AppConstants{
   ];
   static List<Sep7aZekrModel> initialSep7aAzkar = [
     Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 0,
         title: 'سبحان الله',
         count: 33,
     ),
      Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 1,
         title: 'الحمد لله',
         count: 33,
     ),
      Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 2,
         title: 'الله اكبر',
         count: 33,
     ),
      Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 3,
         title: 'لا اله الا الله',
         count: 33,
     ),
      Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 4,
         title: 'لا حول ولا قوة الا بالله ',
         count: 100,
     ),
      Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 5,
         title: 'استغفر الله العظيم',
         count: 33,
     ),
     Sep7aZekrModel(
-        id: Random().nextInt(1000),
+        id: 6,
         title: 'اللهم انك عفو تحب العفو فاعف عني ',
         count: 33,
     ),
