@@ -7,13 +7,13 @@ class QuranTabsCubit extends Cubit<QuranTabsState> {
 
   changeQuranTap({required QuranTabs tab}){
     switch(tab){
-      case QuranTabs.Surah:
+      case QuranTabs.surah:
         emit(QuranBySurahState());
         break;
-      case QuranTabs.Juz:
+      case QuranTabs.juz:
         emit(QuranByJuzState());
         break;
-      case QuranTabs.Page:
+      case QuranTabs.page:
         emit(QuranByPageState());
         break;
     }
@@ -21,4 +21,4 @@ class QuranTabsCubit extends Cubit<QuranTabsState> {
 
 }
 
-enum QuranTabs { Surah, Juz, Page }
+enum QuranTabs { surah, juz, page }

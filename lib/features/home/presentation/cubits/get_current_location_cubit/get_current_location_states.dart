@@ -7,9 +7,6 @@ class GetCurrentLocationInitial extends GetCurrentLocationState{}
 class GetCurrentLocationLoading extends GetCurrentLocationState{}
 
 class GetCurrentLocationSuccess extends GetCurrentLocationState{
-  // final Position position;
-  // final String address;
-
   final CurrentPosition position;
 
   GetCurrentLocationSuccess({required this.position});

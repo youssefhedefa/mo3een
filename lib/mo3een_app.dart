@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 import 'package:mo3een/core/helpers/theme_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/core/routing/routing_manager.dart';
+import 'package:mo3een/core/utilities/box_constants.dart';
 
 class Mo3eenApp extends StatelessWidget {
   const Mo3eenApp({super.key});
@@ -23,12 +27,17 @@ class Mo3eenApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: AppThemeHelper.appTheme,
             onGenerateRoute: AppRoutingManager().onGenerateRoute,
-            initialRoute: AppRoutingConstances.home,
-            //  home :const QuranPage(
-            //   page: 3,
-            //  ),
+            initialRoute: checkStartingPoint(),
           );
         },
     );
+  }
+  String checkStartingPoint() {
+    final box = Hive.box(AppBoxConstants.onBoardingBox);
+    log('box.get(0) ${box.get(0)}');
+    if(box.get(0) == null){
+      return AppRoutingConstances.onBourding;
+    }
+    return AppRoutingConstances.home;
   }
 }

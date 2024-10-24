@@ -192,6 +192,7 @@ class _QuranBodyState extends State<QuranBody> {
                                                           },
                                                           listener: (context,addState){
                                                             if(addState is AddMarkSuccessState){
+                                                              context.read<GetMarkCubit>().getMark();
                                                               ScaffoldMessenger.of(context).showSnackBar(
                                                                 const SnackBar(
                                                                   content: Text('تم تحديد العلامة بنجاح'),

@@ -22,7 +22,7 @@ class CustomTabBar extends StatelessWidget {
                 isSelected: state is QuranBySurahState,
                 onTap: () {
                   context.read<QuranTabsCubit>().changeQuranTap(
-                        tab: QuranTabs.Surah,
+                        tab: QuranTabs.surah,
                       );
                 },
               ),
@@ -31,7 +31,7 @@ class CustomTabBar extends StatelessWidget {
                 isSelected: state is QuranByJuzState,
                 onTap: () {
                   context.read<QuranTabsCubit>().changeQuranTap(
-                        tab: QuranTabs.Juz,
+                        tab: QuranTabs.juz,
                       );
                 },
               ),
@@ -40,7 +40,7 @@ class CustomTabBar extends StatelessWidget {
                 isSelected: state is QuranByPageState,
                 onTap: () {
                   context.read<QuranTabsCubit>().changeQuranTap(
-                        tab: QuranTabs.Page,
+                        tab: QuranTabs.page,
                       );
                 },
               ),

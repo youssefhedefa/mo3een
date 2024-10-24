@@ -81,10 +81,22 @@ abstract class AppTextStyleHelper{
     fontWeight: FontWeight.bold,
     color: AppColorHelper.primaryColor,
   );
+
+  static TextStyle font18RegularBlack = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
   static TextStyle font18RegularPrimary = TextStyle(
     fontSize: 18.sp,
     color: AppColorHelper.primaryColor,
   );
 
+  static TextStyle font24SemiBoldPrimary = TextStyle(
+    fontSize: 24.sp,
+    fontWeight: FontWeight.w700,
+    color: AppColorHelper.primaryColor,
+  );
 
 }

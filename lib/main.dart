@@ -40,6 +40,7 @@ void main() async {
     Hive.openBox<Sep7aZekrModel>(AppBoxConstants.sep7aZekrBox),
     Hive.openBox<PrayerModel>(AppBoxConstants.prayersBox),
     Hive.openBox<CurrentPosition>(AppBoxConstants.currentPositionBox),
+    Hive.openBox(AppBoxConstants.onBoardingBox),
     setupDependencyInjection(),
   ]);
   runApp(
