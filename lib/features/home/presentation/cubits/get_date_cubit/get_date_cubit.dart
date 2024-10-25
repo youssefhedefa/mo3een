@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'package:intl/intl.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_states.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_date_cubit/get_date_states.dart';
 
 class GetDateCubit extends Cubit<GetDateStates> {
   GetDateCubit() : super(GetDateInitialState());

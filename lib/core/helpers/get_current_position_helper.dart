@@ -3,13 +3,29 @@ import 'dart:isolate';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:hive/hive.dart';
-import 'package:mo3een/core/components/models/current_postion.dart';
-import 'package:mo3een/core/utilities/box_constants.dart';
 
 abstract class LocationHelper {
+  static Future<void> checkLocationPermission() async{
+    log('check point');
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    LocationPermission permission;
+    if (!serviceEnabled) {
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if ([LocationPermission.denied , LocationPermission.unableToDetermine , LocationPermission.deniedForever].contains(permission)) {
+          // Permissions are denied, you can show a message to the user.
+          await Geolocator.openAppSettings();
+          // print('Location permissions are denied.');
+          return;
+        }
+      }
+      return ;
+    }
+  }
 
   static Future<Position> getCurrentPosition() async {
+    await checkLocationPermission();
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
     return await Isolate.run<Position>(
       () async {
@@ -40,16 +56,5 @@ abstract class LocationHelper {
       log("getAddressFromLanLat() $e");
       return "القاهره, مصر";
     }
-  }
-
-  static cachLastPosition(Position position, String address) async {
-    var box = Hive.box<CurrentPosition>(AppBoxConstants.currentPositionBox);
-    CurrentPosition currentPosition = CurrentPosition(
-      latitude: position.latitude,
-      longitude: position.longitude,
-      lastUpdate: DateTime.now(),
-      address: address,
-    );
-    await box.add(currentPosition);
   }
 }

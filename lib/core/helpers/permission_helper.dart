@@ -9,8 +9,8 @@ abstract class AppPermissionHelper {
       await _permissionCompleter!.future;
     } else {
       _permissionCompleter = Completer<void>();
+      PermissionStatus status = await permission.status;
       try {
-        PermissionStatus status = await permission.status;
         if (status.isGranted) {
           return true;
         } else {

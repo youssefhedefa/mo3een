@@ -1,5 +1,4 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:mo3een/core/components/models/current_postion.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
 import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
@@ -8,12 +7,6 @@ abstract class AppConstants{
   static const String translationPath = 'assets/translations';
   static const String appFontFamilyName = 'Almarai';
   static const String quranFontFamilyName = 'AmiriQuran';
-  static CurrentPosition cachedPosition = CurrentPosition(
-    address: 'القاهره, مصر',
-    latitude: 30.0444,
-    longitude: 31.2357,
-    lastUpdate: DateTime.now().subtract(const Duration(days: 4)),
-  );
   static Position defaultPosition = Position(
     latitude: 30.0444,
     longitude: 31.2357,

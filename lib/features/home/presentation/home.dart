@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mo3een/features/home/presentation/widgets/current_location_marker.dart';
+import 'package:mo3een/features/home/presentation/widgets/home_data_view.dart';
 import 'package:mo3een/features/home/presentation/widgets/home_header.dart';
-import 'package:mo3een/features/home/presentation/widgets/next_salah_container.dart';
-import 'package:mo3een/features/home/presentation/widgets/picked_date_viewer.dart';
-import 'package:mo3een/features/home/presentation/widgets/prayer_times_list.dart';
-
 import 'widgets/ayah_el_youm.dart';
 
 class HomeView extends StatelessWidget {
@@ -25,10 +21,7 @@ class HomeView extends StatelessWidget {
                 height: 76,
               ),
               HomeHeader(),
-              CurrentLocationMarker(),
-              NextSalahContainer(),
-              PickedDateViewer(),
-              PrayerTimesList(),
+              HomeDataView(),
               AyahElYoum(),
               SizedBox(height: 24),
             ],
@@ -38,3 +31,4 @@ class HomeView extends StatelessWidget {
     );
   }
 }
+

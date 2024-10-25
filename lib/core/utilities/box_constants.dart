@@ -6,4 +6,5 @@ abstract class AppBoxConstants{
   static const String sep7aZekrBox = 'sep7a_zekr_box';
   static const String prayersBox = 'prayers_box';
   static const String currentPositionBox = 'current_position_box';
+  static const String homeDataBox = 'home_data_box';
 }

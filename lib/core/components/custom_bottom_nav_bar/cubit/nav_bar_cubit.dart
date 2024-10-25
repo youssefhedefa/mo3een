@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_states.dart';
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
+import 'package:mo3een/core/helpers/permission_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/add_zekr_to_saved_cubit/add_zekr_to_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
@@ -11,9 +12,8 @@ import 'package:mo3een/features/azkar/presentation/cubits/get_all_azkar_cubit/ge
 import 'package:mo3een/features/azkar/presentation/cubits/get_all_saved_azkar_cubit/get_all_saved_azkar_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/search_for_zekr_cubit/search_for_zekr_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_view.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_current_location_cubit/get_current_location_cubit.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_date/get_date_cubit.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_prayers_times_cubit/get_prayers_times_cubit.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_date_cubit/get_date_cubit.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_random_verse_cubit/get_random_verse_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
 import 'package:mo3een/features/qibla/presentation/ui/qibla_view.dart';
@@ -60,11 +60,11 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => GetDateCubit()..getInitialDate()),
+        BlocProvider(create: (context) => getIt<GetHomeDataCubit>()..getHomeData()),
         BlocProvider(create: (context) => GetRandomVerseCubit()..getRandomVerseCall()),
-        BlocProvider(create: (context) => getIt<GetCurrentLocationCubit>()..getLocation()),
-        BlocProvider(create: (context) => getIt<GetPrayersTimesCubit>()),
       ],
       child: const HomeView(),
+      //child: const HomeViewTest(),
     ),
     MultiBlocProvider(
         providers: [
@@ -92,12 +92,16 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
     const QiblaView(),
   ];
 
-
   void changeNavBarItem(int index){
     emit(BottomNavBarChangeIndexState(
       index: index,
       view: screens[index],
     ));
+  }
+
+  checkPermission() async {
+    await AppPermissionHelper.checkLocationPermission();
+    await AppPermissionHelper.checkNotifyPermission();
   }
 
 }

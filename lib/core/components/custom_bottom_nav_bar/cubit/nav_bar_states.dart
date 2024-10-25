@@ -9,3 +9,7 @@ class BottomNavBarChangeIndexState extends BottomNavBarStates {
   final Widget view;
   BottomNavBarChangeIndexState({required this.index, required this.view});
 }
+
+class CheckPermissionState extends BottomNavBarStates {
+  CheckPermissionState();
+}

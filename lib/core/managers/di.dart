@@ -3,8 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mo3een/features/home/data/data_source/api/dio_factory.dart';
 import 'package:mo3een/features/home/data/data_source/api/home_api_services.dart';
 import 'package:mo3een/features/home/data/repo/home_repo.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_current_location_cubit/get_current_location_cubit.dart';
-import 'package:mo3een/features/home/presentation/cubits/get_prayers_times_cubit/get_prayers_times_cubit.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/quran/data/repo_imple/quran_repo_imple.dart';
 import 'package:mo3een/features/quran/domain/repo/quran_repo.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
@@ -22,14 +21,13 @@ Future<void> setupDependencyInjection() async {
   getIt.registerLazySingleton<HomeApiServices>(
       ()=> HomeApiServices(dio: dio)
   );
+
   getIt.registerLazySingleton<HomeRepo>(
-      ()=> HomeRepo(service: getIt<HomeApiServices>())
+          ()=> HomeRepo(service: getIt<HomeApiServices>())
   );
-  getIt.registerFactory<GetPrayersTimesCubit>(
-          ()=> GetPrayersTimesCubit(repo: getIt<HomeRepo>())
-  );
-  getIt.registerFactory<GetCurrentLocationCubit>(
-          ()=> GetCurrentLocationCubit(repo: getIt<HomeRepo>(),)
+
+  getIt.registerFactory<GetHomeDataCubit>(
+          ()=> GetHomeDataCubit(repo: getIt<HomeRepo>())
   );
 
 }

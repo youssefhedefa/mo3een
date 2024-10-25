@@ -23,13 +23,17 @@ class PrayerDataFromApiModel {
 class Datum {
   Datum({
     required this.timings,
+    required this.metaData
   });
 
   final Timings? timings;
+  final MetaData? metaData;
+
 
   factory Datum.fromJson(Map<String, dynamic> json){
     return Datum(
       timings: json["timings"] == null ? null : Timings.fromJson(json["timings"]),
+      metaData: json["meta"] == null ? null : MetaData.fromJson(json["meta"]),
     );
   }
 
@@ -71,5 +75,16 @@ class Timings {
       midnight: json["Midnight"],
     );
   }
+}
 
+class MetaData{
+  final String timezone;
+
+  MetaData({required this.timezone});
+
+  factory MetaData.fromJson(Map<String, dynamic> json){
+    return MetaData(
+      timezone: json["timezone"],
+    );
+  }
 }

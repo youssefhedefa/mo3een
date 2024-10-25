@@ -1,41 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'current_postion.dart';
+part of 'home_data_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CurrentPositionAdapter extends TypeAdapter<CurrentPosition> {
+class HomeDataModelAdapter extends TypeAdapter<HomeDataModel> {
   @override
-  final int typeId = 5;
+  final int typeId = 10;
 
   @override
-  CurrentPosition read(BinaryReader reader) {
+  HomeDataModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return CurrentPosition(
-      latitude: fields[0] as double,
-      longitude: fields[1] as double,
-      lastUpdate: fields[2] as DateTime,
-      address: fields[3] as String,
+    return HomeDataModel(
+      location: fields[0] as String?,
+      nextPrayer: fields[1] as String?,
+      prayers: (fields[4] as List?)?.cast<PrayerModel>(),
+      nextPrayerTimeHoursLeft: fields[2] as int?,
+      nextPrayerTimeMinutesLeft: fields[3] as int?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, CurrentPosition obj) {
+  void write(BinaryWriter writer, HomeDataModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.latitude)
+      ..write(obj.location)
       ..writeByte(1)
-      ..write(obj.longitude)
+      ..write(obj.nextPrayer)
       ..writeByte(2)
-      ..write(obj.lastUpdate)
+      ..write(obj.nextPrayerTimeHoursLeft)
       ..writeByte(3)
-      ..write(obj.address);
+      ..write(obj.nextPrayerTimeMinutesLeft)
+      ..writeByte(4)
+      ..write(obj.prayers);
   }
 
   @override
@@ -44,7 +47,7 @@ class CurrentPositionAdapter extends TypeAdapter<CurrentPosition> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CurrentPositionAdapter &&
+      other is HomeDataModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
