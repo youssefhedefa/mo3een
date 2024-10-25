@@ -5,22 +5,22 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 abstract class LocationHelper {
-  static Future<void> checkLocationPermission() async{
+
+  static Future<void> checkLocationPermission() async {
     log('check point');
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    LocationPermission permission;
-    if (!serviceEnabled) {
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if ([LocationPermission.denied , LocationPermission.unableToDetermine , LocationPermission.deniedForever].contains(permission)) {
-          // Permissions are denied, you can show a message to the user.
-          await Geolocator.openAppSettings();
-          // print('Location permissions are denied.');
-          return;
-        }
+    log('serviceEnabled $serviceEnabled');
+    // Always request permission, even if location services are enabled
+    LocationPermission permission = await Geolocator.checkPermission();
+    log('permission $permission');
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if ([LocationPermission.denied, LocationPermission.unableToDetermine, LocationPermission.deniedForever].contains(permission)) {
+        // Permissions are denied, you can show a message to the user.
+        await Geolocator.openAppSettings();
+        // print('Location permissions are denied.');
+        return;
       }
-      return ;
     }
   }
 

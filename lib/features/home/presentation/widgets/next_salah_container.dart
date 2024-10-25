@@ -17,7 +17,7 @@ class NextSalahContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: REdgeInsets.all(16),
+      padding: REdgeInsets.all(12.h),
       decoration: BoxDecoration(
         color: AppColorHelper.coffeeColor,
         borderRadius: BorderRadius.circular(12),
@@ -54,6 +54,4 @@ class NextSalahContainer extends StatelessWidget {
       ),
     );
   }
-
-
 }

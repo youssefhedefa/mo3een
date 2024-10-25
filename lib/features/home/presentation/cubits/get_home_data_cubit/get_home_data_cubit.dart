@@ -7,9 +7,11 @@ class GetHomeDataCubit extends Cubit<GetHomeDataState>{
 
   final HomeRepo repo;
 
-  getHomeData()async {
+  getHomeData({bool? refresh})async {
     emit(GetHomeDataLoadingState());
-    final dataResponse = await repo.getHomeData();
+    final dataResponse = await repo.getHomeData(
+      refresh: refresh ?? false,
+    );
     dataResponse.fold(
       (error) => emit(GetHomeDataErrorState(error: error)),
       (data) => emit(GetHomeDataSuccessState(data: data)),

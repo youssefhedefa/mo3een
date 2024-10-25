@@ -22,21 +22,27 @@ class QiblaView extends StatelessWidget {
               'اتجاة القبلة',
               style: AppTextStyleHelper.font16BoldPrimary,
             ),
-            const Expanded(child: QiblahDirection(),),
+            const Expanded(
+              child: QiblahDirection(),
+            ),
             Text(
-                'اتجاه السهم الاحمر يشير الى اتجاه القبلة ',
+              'اتجاه السهم الاحمر يشير الى اتجاه القبلة ',
               textAlign: TextAlign.center,
               style: AppTextStyleHelper.font16BoldPrimary,
             ),
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             Text(
-                'ضع الهاتف على مستوى افقي للحصول على افضل نتيجة',
+              'ضع الهاتف على مستوى افقي للحصول على افضل نتيجة',
               textAlign: TextAlign.center,
               style: AppTextStyleHelper.font16BoldPrimary.copyWith(
                 color: AppColorHelper.primaryColor.withOpacity(0.8),
               ),
             ),
-            const SizedBox(height: 40,),
+            const SizedBox(
+              height: 40,
+            ),
           ],
         ),
       ),

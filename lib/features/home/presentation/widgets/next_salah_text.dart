@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 
@@ -15,10 +16,10 @@ class NextSalahText extends StatelessWidget {
       children: [
         SvgPicture.asset(
           svgIcon,
-          height: 28,
-          width: 28,
+          height: 28.h,
+          width: 28.w,
         ),
-        const SizedBox(width: 6),
+        SizedBox(width: 6.w),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,7 +27,7 @@ class NextSalahText extends StatelessWidget {
               title,
               style: AppTextStyleHelper.font14BoldPrimary,
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.w),
             Text(
               subTitle,
               style: AppTextStyleHelper.font14RegularPrimary60,

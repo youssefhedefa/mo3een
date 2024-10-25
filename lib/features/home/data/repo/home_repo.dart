@@ -14,10 +14,10 @@ class HomeRepo {
   final HomeApiServices service;
 
   bool getPrayersTimesFlag = true;
-  Future<Either<String, HomeDataModel>> getHomeData() async {
+  Future<Either<String, HomeDataModel>> getHomeData({required bool refresh}) async {
     bool isConnected = await ConnectivityHelper.isConnected();
     log('Connection is $isConnected');
-    if (isConnected && getPrayersTimesFlag) {
+    if (isConnected && (refresh || getPrayersTimesFlag)) {
       return _getHomeDataFromNetwork();
     } else {
       return _getHomeDataFromCache();
@@ -87,6 +87,8 @@ class HomeRepo {
       getPrayersTimesFlag = false;
       return Right(homeData);
     } catch (e) {
+      log('error here ${e.toString()}');
+      getPrayersTimesFlag = true;
       return Left(e.toString());
     }
   }
