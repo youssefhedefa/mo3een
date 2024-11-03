@@ -50,7 +50,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  integration_test:
+    sdk: flutter
+  mocktail: any
   flutter_lints: ^2.0.0
   hive_generator: any
   build_runner: any

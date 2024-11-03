@@ -22,6 +22,8 @@ void main() async {
   Bloc.observer = MyBlocObserver();
   AppNotifyHelper.initNotify();
   await Hive.initFlutter();
+  await ScreenUtil.ensureScreenSize();
+  await EasyLocalization.ensureInitialized();
   Hive.registerAdapter(QuranMarkModelAdapter());
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());
@@ -29,8 +31,6 @@ void main() async {
   Hive.registerAdapter(PrayerModelAdapter());
   Hive.registerAdapter(HomeDataModelAdapter());
   await Future.wait([
-    ScreenUtil.ensureScreenSize(),
-    EasyLocalization.ensureInitialized(),
     Hive.openBox<QuranMarkModel>(AppBoxConstants.quranMarksBox),
     Hive.openBox<AzkarModel>(AppBoxConstants.azkarBox),
     Hive.openBox<ZekrItem>(AppBoxConstants.zekrItemBox),

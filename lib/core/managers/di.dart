@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mo3een/core/helpers/get_current_position_helper.dart';
 import 'package:mo3een/features/home/data/data_source/api/dio_factory.dart';
 import 'package:mo3een/features/home/data/data_source/api/home_api_services.dart';
+import 'package:mo3een/features/home/data/data_source/cached/cached_home_data.dart';
 import 'package:mo3een/features/home/data/repo/home_repo.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/quran/data/repo_imple/quran_repo_imple.dart';
@@ -22,8 +24,20 @@ Future<void> setupDependencyInjection() async {
       ()=> HomeApiServices(dio: dio)
   );
 
+  getIt.registerLazySingleton<CachedHomeData>(
+          ()=> CachedHomeData()
+  );
+
+  getIt.registerLazySingleton<LocationHelper>(
+          ()=> LocationHelper()
+  );
+
   getIt.registerLazySingleton<HomeRepo>(
-          ()=> HomeRepo(service: getIt<HomeApiServices>())
+          ()=> HomeRepo(
+              service: getIt<HomeApiServices>(),
+            cachedHomeDataInstance: getIt<CachedHomeData>(),
+            locationHelper: getIt<LocationHelper>()
+          )
   );
 
   getIt.registerFactory<GetHomeDataCubit>(

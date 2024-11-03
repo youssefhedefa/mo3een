@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mo3een/core/utilities/constants.dart';
+import 'package:mo3een/features/home/data/models/home_data_model.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_state.dart';
 import 'package:mo3een/features/home/presentation/widgets/current_location_marker.dart';
@@ -13,41 +15,64 @@ class HomeDataView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetHomeDataCubit, GetHomeDataState>(
+    return BlocConsumer<GetHomeDataCubit, GetHomeDataState>(
       builder: (context, state) {
         if (state is GetHomeDataLoadingState) {
           return const CustomHomeLoading();
         }
         if (state is GetHomeDataErrorState) {
-          return Center(
-            child: Text(
-              state.error,
-              style: const TextStyle(
-                color: Colors.red,
-              ),
+          return HomeDataRepresentative(
+            data: HomeDataModel(
+              location: 'غير متوفر',
+              nextPrayer: 'غير متوفر',
+              prayers: AppConstants.testPrayersList,
+              nextPrayerTimeHoursLeft: 0,
+              nextPrayerTimeMinutesLeft: 0,
             ),
           );
         }
         if (state is GetHomeDataSuccessState) {
-          return Column(
-            children: [
-              CurrentLocationMarker(
-                address: state.data.location ?? "",
-              ),
-              NextSalahContainer(
-                nextPrayer: state.data.nextPrayer ?? "",
-                remainHours: state.data.nextPrayerTimeHoursLeft ?? 0,
-                remainMinutes: state.data.nextPrayerTimeMinutesLeft ?? 0,
-              ),
-              const PickedDateViewer(),
-              PrayerTimesList(
-                prayers: state.data.prayers ?? [],
-              ),
-            ],
+          return HomeDataRepresentative(
+            data: state.data,
           );
         }
         return const SizedBox();
       },
+      listener: (context, state) {
+        if (state is GetHomeDataErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('من فضلك تاكد من تفعيل الموقع الخاص بك وحاول مرة اخري'),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class HomeDataRepresentative extends StatelessWidget {
+  const HomeDataRepresentative({super.key, required this.data});
+
+  final HomeDataModel data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CurrentLocationMarker(
+          address: data.location ?? "",
+        ),
+        NextSalahContainer(
+          nextPrayer: data.nextPrayer ?? "",
+          remainHours: data.nextPrayerTimeHoursLeft ?? 0,
+          remainMinutes: data.nextPrayerTimeMinutesLeft ?? 0,
+        ),
+        const PickedDateViewer(),
+        PrayerTimesList(
+          prayers: data.prayers ?? [],
+        ),
+      ],
     );
   }
 }

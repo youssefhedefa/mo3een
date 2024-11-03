@@ -32,18 +32,22 @@ class CurrentLocationMarker extends StatelessWidget {
             onPressed: () async {
               bool isConnected = await ConnectivityHelper.isConnected();
               if (!isConnected) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    content: Text('لا يوجد اتصال بالإنترنت'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                return;
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      content: Text('لا يوجد اتصال بالإنترنت'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                  return;
+                }
               } else {
-                context.read<GetHomeDataCubit>().getHomeData(
-                      refresh: true,
-                    );
+                if (context.mounted) {
+                  context.read<GetHomeDataCubit>().getHomeData(
+                        refresh: true,
+                      );
+                }
               }
             },
             icon: const Icon(

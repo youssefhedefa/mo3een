@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_states.dart';
 import 'package:mo3een/core/components/models/bottom_nav_bar_item_model.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
-import 'package:mo3een/core/helpers/permission_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/add_zekr_to_saved_cubit/add_zekr_to_saved_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/azkar_tabs_cubit/azkar_tabs_cubit.dart';
@@ -97,11 +96,6 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       index: index,
       view: screens[index],
     ));
-  }
-
-  checkPermission() async {
-    await AppPermissionHelper.checkLocationPermission();
-    await AppPermissionHelper.checkNotifyPermission();
   }
 
 }

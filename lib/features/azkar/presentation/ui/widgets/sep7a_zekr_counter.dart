@@ -13,32 +13,43 @@ class Sep7aZekrCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: REdgeInsets.all(8.0),
-          width: 50.w,
-          height: 50.h,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: AppColorHelper.primaryColor,
+    return SizedBox(
+      width: 60.w,
+      child: Column(
+        children: [
+          Container(
+            padding: REdgeInsets.all(8.0),
+            width: 50.w,
+            height: 50.h,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: AppColorHelper.primaryColor,
+              ),
+            ),
+            child: Text(
+              count,
+              style: AppTextStyleHelper.font14RegularPrimary,
             ),
           ),
-          child: Text(
-            count,
-            style: AppTextStyleHelper.font14RegularPrimary,
+          const SizedBox(
+            height: 6,
           ),
-        ),
-        const SizedBox(
-          height: 6,
-        ),
-        Text(
-          title,
-          style: AppTextStyleHelper.font14RegularPrimary,
-        ),
-      ],
+          Text(
+            //title,
+            addToTotalNewLine(text: title),
+            style: AppTextStyleHelper.font14RegularPrimary,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
+  }
+  String addToTotalNewLine({required String text}) {
+    if(text == 'الاجمالي') {
+      return '$text\n';
+    }
+    return text;
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mo3een/features/quran/domain/entities/ayah_entity.dart';
@@ -20,7 +21,10 @@ class SearchCubit extends Cubit<SearchStates> {
   }
 
   String normalizeArabicText(String text) {
-    return text
+    RegExp arabicFormation = RegExp(
+        r'[\u0610-\u061A\u064B-\u065F\u06D6-\u06DC\u06DF-\u06E8\u06EA-\u06ED]');
+    final cleanText = text.replaceAll(arabicFormation, '');
+    return cleanText
         .replaceAll('ٱ', 'ا')
         .replaceAll('إ', 'ا')
         .replaceAll('أ', 'ا')
@@ -47,6 +51,11 @@ class SearchCubit extends Cubit<SearchStates> {
         .replaceAll('ٜ', '')
         .replaceAll('ٝ', '')
         .replaceAll('ٞ', '')
+        .replaceAll('ٌ', '')
+        .replaceAll('ُ', '')
+        .replaceAll('ً', '')
+        .replaceAll('ً', '')
+        .replaceAll('َ', '')
         .replaceAll('ٟ', '');
   }
 
@@ -68,33 +77,54 @@ class SearchCubit extends Cubit<SearchStates> {
             searchResults: searchResults,
           ),
         );
-      } else if (query.length >= 3) {
-        List<SuraEntity> searchResults = allSurahs.where(
-          (element) {
-            return removeDiacritics(normalizeArabicText(element.name))
-                .contains(query);
-          },
-        ).toList();
-        var searchedAyah = searchWords(query);
-        //log('searched : '+searchedAyah.toString());
-        var result = searchedAyah['result'];
-        if (searchedAyah['occurences'] > 15) {
-          result = result.sublist(0, 15);
-        }
-        List<dynamic> ayahs = result.map(
-          (e) {
-            return AyahEntity(
-              surahNumber: e['surah'],
-              ayahNumber: e['verse'],
-              ayah: getVerse(e['surah'], e['verse']),
-              suraName: allSurahs
-                  .firstWhere((element) => element.number == e['surah'])
-                  .name,
-            );
-          },
-        ).toList();
-        emit(SearchSuccessState(searchResults: searchResults, ayahs: ayahs));
+      } else if (query.length >= 2) {
+        emit(
+          SearchSuccessState(
+            searchResults: _searchOnSuras(
+              query: query,
+              allSurahs: allSurahs,
+            ),
+            ayahs: _searchOnAyahs(
+              query: query,
+              allSurahs: allSurahs,
+            ),
+          ),
+        );
       }
     }
+  }
+
+  List<SuraEntity> _searchOnSuras(
+      {required String query, required List<SuraEntity> allSurahs}) {
+    List<SuraEntity> searchResults = allSurahs.where(
+      (element) {
+        return removeDiacritics(normalizeArabicText(element.name))
+            .contains(query);
+      },
+    ).toList();
+    return searchResults;
+  }
+
+  List<dynamic> _searchOnAyahs(
+      {required String query, required List<SuraEntity> allSurahs}) {
+    var searchedAyah = searchWords(query);
+    var result = searchedAyah['result'];
+    if (searchedAyah['occurences'] > 15) {
+      result = result.sublist(0, 15);
+    }
+    List<dynamic> ayahs = result.map(
+      (aya) {
+        log('aya: ${getVerse(aya['surah'], aya['verse'])}');
+        return AyahEntity(
+          surahNumber: aya['surah'],
+          ayahNumber: aya['verse'],
+          ayah: getVerse(aya['surah'], aya['verse']),
+          suraName: allSurahs
+              .firstWhere((element) => element.number == aya['surah'])
+              .name,
+        );
+      },
+    ).toList();
+    return ayahs;
   }
 }

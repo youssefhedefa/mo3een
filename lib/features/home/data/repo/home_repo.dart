@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,11 +11,18 @@ import 'package:mo3een/features/home/data/models/home_data_model.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
 
 class HomeRepo {
-  HomeRepo({required this.service});
+  HomeRepo({
+    required this.service,
+    required this.cachedHomeDataInstance,
+    required this.locationHelper,
+  });
   final HomeApiServices service;
+  final CachedHomeData cachedHomeDataInstance;
+  final LocationHelper locationHelper;
 
   bool getPrayersTimesFlag = true;
-  Future<Either<String, HomeDataModel>> getHomeData({required bool refresh}) async {
+  Future<Either<String, HomeDataModel>> getHomeData(
+      {required bool refresh}) async {
     bool isConnected = await ConnectivityHelper.isConnected();
     log('Connection is $isConnected');
     if (isConnected && (refresh || getPrayersTimesFlag)) {
@@ -26,12 +34,18 @@ class HomeRepo {
 
   Future<Either<String, HomeDataModel>> _getHomeDataFromNetwork() async {
     try {
-      CachedHomeData cachedHomeData = CachedHomeData();
-      Position position = await LocationHelper.getCurrentPosition();
-      String location = await LocationHelper.getAddressFromLanLat(
-          longitude: position.longitude, latitude: position.latitude);
-      final response = await service.getPrayerTimes(
-          latitude: position.latitude, longitude: position.longitude);
+      //CachedHomeData cachedHomeData = CachedHomeData();
+      Position position = await locationHelper.getCurrentPosition();
+      String location = await locationHelper.getAddressFromLanLat(
+        longitude: position.longitude,
+        latitude: position.latitude,
+      );
+      final response = await service
+          .getPrayerTimes(
+            latitude: position.latitude,
+            longitude: position.longitude,
+          )
+          .timeout(const Duration(seconds: 20));
       if (response.data is String) {
         return Left(response.data.toString());
       }
@@ -74,7 +88,7 @@ class HomeRepo {
         ),
       ];
       PrayerModel nearestPrayer = _getNearestPrayer(prayers)
-          .firstWhere((element) => element.hisTurn == true);
+          .firstWhere((element) => element.hisTurn == true,);
       HomeDataModel homeData = HomeDataModel(
         location: location,
         nextPrayer: nearestPrayer.prayer,
@@ -83,19 +97,25 @@ class HomeRepo {
             _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(prayers),
       );
-      cachedHomeData.cacheHomeData(homeData: homeData);
+      cachedHomeDataInstance.cacheHomeData(homeData: homeData);
       getPrayersTimesFlag = false;
       return Right(homeData);
-    } catch (e) {
-      log('error here ${e.toString()}');
+    } on TimeoutException catch (e) {
+      log('error here on time ex ${e.toString()}');
       getPrayersTimesFlag = true;
-      return Left(e.toString());
+      // return Left(e.toString());
+      return _getHomeDataFromCache();
+    } catch (e) {
+      log('error here ?? ${e.toString()}');
+      getPrayersTimesFlag = true;
+      // return Left(e.toString());
+      return _getHomeDataFromCache();
     }
   }
 
   Future<Either<String, HomeDataModel>> _getHomeDataFromCache() async {
     try {
-      HomeDataModel cachedHomeData = await CachedHomeData().getHomeData();
+      HomeDataModel cachedHomeData = await cachedHomeDataInstance.getHomeData();
       PrayerModel nearestPrayer = _getNearestPrayer(cachedHomeData.prayers!)
           .firstWhere((element) => element.hisTurn == true);
       HomeDataModel homeData = HomeDataModel(
@@ -103,7 +123,7 @@ class HomeRepo {
         nextPrayer: nearestPrayer.prayer,
         nextPrayerTimeHoursLeft: _getRemainingTime(nearestPrayer).inHours,
         nextPrayerTimeMinutesLeft:
-        _getRemainingTime(nearestPrayer).inMinutes % 60,
+            _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(cachedHomeData.prayers!),
       );
       return Right(homeData);

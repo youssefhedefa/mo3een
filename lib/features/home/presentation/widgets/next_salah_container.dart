@@ -24,30 +24,29 @@ class NextSalahContainer extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Expanded(
-            flex: 60,
-            child: isLoading ?? false ? const CustomLoadingIndicator() : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                NextSalahText(
-                  title: 'الصلاة القادمة هي صلاة ',
-                  subTitle: nextPrayer,
-                  svgIcon: AppIconHelper.mosqueIcon,
-                ),
-                const SizedBox(height: 16),
-                NextSalahText(
-                  title: 'باقي على صلاة $nextPrayer',
-                  subTitle: '$remainHours ساعة و $remainMinutes دقيقة ',
-                  svgIcon: AppIconHelper.timeIcon,
-                ),
-              ],
-            ),
+          isLoading ?? false ? const CustomLoadingIndicator() : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              NextSalahText(
+                title: 'الصلاة القادمة هي صلاة ',
+                subTitle: nextPrayer,
+                svgIcon: AppIconHelper.mosqueIcon,
+              ),
+              const SizedBox(height: 16),
+              NextSalahText(
+                title: 'باقي على صلاة $nextPrayer',
+                subTitle: '$remainHours ساعة و $remainMinutes دقيقة ',
+                svgIcon: AppIconHelper.timeIcon,
+              ),
+            ],
           ),
-          Center(
-            child: Image.asset(
-              AppImageHelper.prayerImage,
-              fit: BoxFit.cover,
+          Expanded(
+            child: Center(
+              child: Image.asset(
+                AppImageHelper.prayerImage,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ],

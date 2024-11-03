@@ -16,7 +16,7 @@ class AddSep7aZekrButton extends StatelessWidget {
       onPressed: onPressed,
       color: AppColorHelper.primaryColor,
       minWidth: double.infinity,
-      padding: REdgeInsets.symmetric(vertical: 8),
+      padding: REdgeInsets.symmetric(vertical: 12.h),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
