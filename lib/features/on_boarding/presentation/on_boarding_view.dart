@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
@@ -90,7 +88,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     if (_currentPage == 2) {
                       final box = Hive.box(AppBoxConstants.onBoardingBox);
                       box.put(0, true).then((_) {
-                        log('onBoardingBox : ${box.get(0)}');
                         if(context.mounted){
                           Navigator.pushNamedAndRemoveUntil(context,
                               AppRoutingConstances.home, (route) => false);

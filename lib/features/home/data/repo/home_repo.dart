@@ -116,8 +116,13 @@ class HomeRepo {
   Future<Either<String, HomeDataModel>> _getHomeDataFromCache() async {
     try {
       HomeDataModel cachedHomeData = await cachedHomeDataInstance.getHomeData();
+      for (var element in cachedHomeData.prayers!) {
+        element.hisTurn = false;
+      }
       PrayerModel nearestPrayer = _getNearestPrayer(cachedHomeData.prayers!)
-          .firstWhere((element) => element.hisTurn == true);
+          .firstWhere((element) {
+            return element.hisTurn == true;
+          });
       HomeDataModel homeData = HomeDataModel(
         location: cachedHomeData.location,
         nextPrayer: nearestPrayer.prayer,

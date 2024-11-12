@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:mo3een/core/helpers/notify_helper.dart';
 import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/utilities/bloc_observer.dart';
 import 'package:mo3een/core/utilities/box_constants.dart';
@@ -20,7 +19,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   changeSystemUiOverlayStyle();
   Bloc.observer = MyBlocObserver();
-  AppNotifyHelper.initNotify();
   await Hive.initFlutter();
   await ScreenUtil.ensureScreenSize();
   await EasyLocalization.ensureInitialized();

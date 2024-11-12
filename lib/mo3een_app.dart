@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive/hive.dart';
@@ -34,7 +32,6 @@ class Mo3eenApp extends StatelessWidget {
   }
   String checkStartingPoint() {
     final box = Hive.box(AppBoxConstants.onBoardingBox);
-    log('box.get(0) ${box.get(0)}');
     if(box.get(0) == null){
       return AppRoutingConstances.onBourding;
     }

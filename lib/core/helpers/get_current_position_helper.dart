@@ -8,9 +8,6 @@ class LocationHelper {
     counter++;
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     log('serviceEnabled $serviceEnabled');
-    if (serviceEnabled) {
-      return true;
-    }
     LocationPermission permission = await Geolocator.checkPermission();
     log('permission $permission');
     if (permission == LocationPermission.denied) {
@@ -21,6 +18,7 @@ class LocationHelper {
         LocationPermission.deniedForever
       ].contains(permission)) {
         await Geolocator.openAppSettings();
+        permission = await Geolocator.requestPermission();
         if (counter > 2) {
           return false;
         }

@@ -45,7 +45,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   dartz: ^0.10.1
   connectivity_plus: ^6.1.0
-  awesome_notifications: ^0.10.0
+  flutter_native_splash: ^2.4.2
 
 dev_dependencies:
   flutter_test:
@@ -66,7 +66,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/audio/
     - assets/fonts/
     - assets/icons/
     - assets/images/
