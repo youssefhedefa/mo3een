@@ -23,37 +23,37 @@ abstract class AppConstants{
     PrayerModel(
       icon: AppIconHelper.elFajrIcon,
       prayer: 'الفجر',
-      time: '04:30',
+      time: '04:53',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el4rokIcon,
       prayer: 'الشروق',
-      time: '05:45',
+      time: '06:24',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.elZohrIcon,
       prayer: 'الظهر',
-      time: '12:30',
+      time: '11:42',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el3asrIcon,
       prayer: 'العصر',
-      time: '15:45',
+      time: '14:40',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.elMa8rebIcon,
       prayer: 'المغرب',
-      time: '18:30',
+      time: '17:00',
       hisTurn: false,
     ),
     PrayerModel(
       icon: AppIconHelper.el3e4a2Icon,
       prayer: 'العشاء',
-      time: '20:00',
+      time: '18:21',
       hisTurn: false,
     ),
   ];

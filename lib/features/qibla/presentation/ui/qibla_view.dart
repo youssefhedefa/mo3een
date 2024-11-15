@@ -23,7 +23,7 @@ class QiblaView extends StatelessWidget {
               style: AppTextStyleHelper.font16BoldPrimary,
             ),
             const Expanded(
-              child: QiblahDirection(),
+              child: QiblahDirectionWidget(),
             ),
             Text(
               'اتجاه السهم الاحمر يشير الى اتجاه القبلة ',

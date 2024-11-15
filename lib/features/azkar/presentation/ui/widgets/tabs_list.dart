@@ -13,9 +13,10 @@ class TabsList extends StatelessWidget {
     return BlocBuilder<AzkarTabsCubit,AzkarTabsState>(
       builder: (context,state) {
         return Row(
-          mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment:MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            SizedBox(
+              width: 140.w,
               child: CustomTabItem(
                 title: 'كل الأذكار',
                 isSelected: state is AllAzkarTab,
@@ -24,8 +25,8 @@ class TabsList extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(width: 40.w,),
-            Expanded(
+            SizedBox(
+              width: 140.w,
               child: CustomTabItem(
                 title: 'الاذكار المحفوظة',
                 isSelected: state is MemorizedAzkarTab,

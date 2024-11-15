@@ -44,7 +44,9 @@ class ZekItemShower extends StatelessWidget {
                 index: zekrIndex,
                 maxCount: count,
               ),
-              const ShareButton(),
+               ShareButton(
+                text: zekr,
+              ),
             ],
           ),
         ],

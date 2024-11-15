@@ -3,42 +3,36 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:mo3een/core/components/widgets/custom_loading.dart';
+import 'package:mo3een/core/helpers/get_current_position_helper.dart';
 import 'package:mo3een/core/helpers/image_helper.dart';
-import 'package:mo3een/core/helpers/text_style_helper.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:mo3een/features/qibla/presentation/ui/widgets/permission_error_widget.dart';
 
-class QiblahDirection extends StatefulWidget {
-  const QiblahDirection({super.key});
+class QiblahDirectionWidget extends StatefulWidget {
+  const QiblahDirectionWidget({super.key});
 
   @override
-  State<QiblahDirection> createState() => _QiblahDirectionState();
+  State<QiblahDirectionWidget> createState() => _QiblahDirectionWidgetState();
 }
 
-class _QiblahDirectionState extends State<QiblahDirection>
+class _QiblahDirectionWidgetState extends State<QiblahDirectionWidget>
     with SingleTickerProviderStateMixin {
   bool hasPermission = false;
+  late LocationHelper locationHelper;
 
   Animation<double>? animation;
   AnimationController? _animationController;
   double begin = 0.0;
 
-  Future getPermission() async {
-    if (await Permission.location.serviceStatus.isEnabled) {
-      var status = await Permission.location.status;
-      if (status.isGranted) {
-        hasPermission = true;
-      } else {
-        Permission.location.request().then((value) {
-          setState(() {
-            hasPermission = (value == PermissionStatus.granted);
-          });
-        });
-      }
+  Future<void> getPermission() async {
+    hasPermission = await locationHelper.checkLocationPermission();
+    if (mounted) {
+      setState(() {});
     }
   }
 
   @override
   void initState() {
+    locationHelper = LocationHelper();
     getPermission();
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 500));
@@ -54,55 +48,35 @@ class _QiblahDirectionState extends State<QiblahDirection>
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getPermission(),
+    if (!hasPermission) {
+      return const PermissionErrorWidget();
+    }
+    return StreamBuilder(
+      stream: FlutterQiblah.qiblahStream,
       builder: (context, snapshot) {
-        if (!hasPermission) {
-          return Center(
-            child: Text(
-              'الرجاء تفعيل الموقع واعاده المحاوله',
-              textAlign: TextAlign.center,
-              style: AppTextStyleHelper.font16SemiBoldPrimary,
-            ),
-          );
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CustomLoadingIndicator());
         }
-        return StreamBuilder(
-          stream: FlutterQiblah.qiblahStream,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container(
-                alignment: Alignment.center,
-                child: const CustomLoadingIndicator(),
-              );
-            }
-            if (snapshot.hasError) {
-              dev.log('Error from qibla direction: ${snapshot.error}');
-              return Center(
-                child: Text(
-                  'من فضلك تأكد من تفعيل الصلاحيات',
-                  style: AppTextStyleHelper.font16SemiBoldPrimary,
-                ),
-              );
-            }
-            final qiblahDirection = snapshot.data;
-            animation = Tween(
-                    begin: begin,
-                    end: (qiblahDirection!.qiblah * (pi / 180) * -1))
-                .animate(_animationController!);
-            begin = (qiblahDirection.qiblah * (pi / 180) * -1);
-            _animationController!.forward(from: 0);
-            return Center(
-              child: AnimatedBuilder(
-                animation: animation!,
-                builder: (context, child) => Transform.rotate(
-                  angle: animation!.value,
-                  child: Image.asset(
-                    AppImageHelper.qiblaImage,
-                  ),
-                ),
-              ),
-            );
-          },
+        if (snapshot.hasError || !snapshot.hasData) {
+          dev.log('Error from qibla direction: ${snapshot.error}');
+          return const PermissionErrorWidget();
+        }
+        final qiblahDirection = snapshot.data;
+        animation = Tween(
+          begin: begin,
+          end: (qiblahDirection!.qiblah * (pi / 180) * -1),
+        ).animate(_animationController!);
+        begin = (qiblahDirection.qiblah * (pi / 180) * -1);
+        _animationController!.forward(from: 0);
+
+        return Center(
+          child: AnimatedBuilder(
+            animation: animation!,
+            builder: (context, child) => Transform.rotate(
+              angle: animation!.value,
+              child: Image.asset(AppImageHelper.qiblaImage),
+            ),
+          ),
         );
       },
     );

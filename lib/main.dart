@@ -22,6 +22,7 @@ void main() async {
   await Hive.initFlutter();
   await ScreenUtil.ensureScreenSize();
   await EasyLocalization.ensureInitialized();
+  await setupDependencyInjection();
   Hive.registerAdapter(QuranMarkModelAdapter());
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());
@@ -36,7 +37,6 @@ void main() async {
     Hive.openBox<PrayerModel>(AppBoxConstants.prayersBox),
     Hive.openBox<HomeDataModel>(AppBoxConstants.homeDataBox),
     Hive.openBox(AppBoxConstants.onBoardingBox),
-    setupDependencyInjection(),
   ]);
   runApp(
     EasyLocalization(
@@ -49,6 +49,7 @@ void main() async {
 }
 
 changeSystemUiOverlayStyle() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.dark,

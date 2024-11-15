@@ -9,7 +9,7 @@ class HomeApiServices {
       {required num latitude, required num longitude}) async {
     var headers = {'Authorization': 'Bearer token'};
     var response = await dio.request(
-      'http://api.aladhan.com/v1/timings?latitude=$latitude&longitude=$longitude',
+      'https://api.aladhan.com/v1/timings?latitude=$latitude&longitude=$longitude',
       options: Options(
         method: 'GET',
         headers: headers,

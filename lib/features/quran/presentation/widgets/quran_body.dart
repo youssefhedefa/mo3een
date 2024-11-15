@@ -110,126 +110,11 @@ class _QuranBodyState extends State<QuranBody> {
                           TextSpan(
                             recognizer: LongPressGestureRecognizer()
                               ..onLongPress = () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  useSafeArea: true,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider(
-                                          create: (context) => AddMarkCubit(),
-                                        ),
-                                        BlocProvider(
-                                          create: (context) =>
-                                              GetMarkCubit()..getMark(),
-                                        ),
-                                      ],
-                                      child: Builder(builder: (context) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(24.0),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      'تفسير السعدي للآية رقم $i',
-                                                      style: AppTextStyleHelper
-                                                          .font16BoldPrimary,
-                                                    ),
-                                                    BlocBuilder<GetMarkCubit,
-                                                            GetMarkStates>(
-                                                        builder:
-                                                            (context, state) {
-                                                      if (state
-                                                          is GetMarkSuccessState) {
-                                                        if (state.mark.surah ==
-                                                                e["surah"] &&
-                                                            state.mark.ayah ==
-                                                                i &&
-                                                            state.mark.page ==
-                                                                index) {
-                                                          return IconButton(
-                                                            onPressed: () {},
-                                                            icon: Icon(
-                                                              Icons.bookmark,
-                                                              color: AppColorHelper
-                                                                  .primaryColor,
-                                                              size: 30.sp,
-                                                            ),
-                                                          );
-                                                        }
-                                                        return BlocConsumer<AddMarkCubit,AddMarkState>(
-                                                          builder: (context,addState) {
-                                                            return IconButton(
-                                                              onPressed: () {
-                                                                context
-                                                                    .read<
-                                                                        AddMarkCubit>()
-                                                                    .addMark(
-                                                                      mark:
-                                                                          QuranMarkModel(
-                                                                        id: 0,
-                                                                        surah: e[
-                                                                            "surah"],
-                                                                        ayah: i,
-                                                                        page: index,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              icon: Icon(
-                                                                Icons
-                                                                    .bookmark_border_outlined,
-                                                                color: AppColorHelper
-                                                                    .primaryColor,
-                                                                size: 30.sp,
-                                                              ),
-                                                            );
-                                                          },
-                                                          listener: (context,addState){
-                                                            if(addState is AddMarkSuccessState){
-                                                              context.read<GetMarkCubit>().getMark();
-                                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                                const SnackBar(
-                                                                  content: Text('تم تحديد العلامة بنجاح'),
-                                                                ),
-                                                              );
-                                                            }
-                                                          },
-                                                        );
-                                                      }
-                                                      return const SizedBox();
-                                                    }),
-                                                  ],
-                                                ),
-                                                Text(
-                                                  getVerseElsa3dyTranslation(
-                                                    e["surah"],
-                                                    i,
-                                                    verseEndSymbol: true,
-                                                  ),
-                                                  style: AppTextStyleHelper
-                                                      .font16RegularPrimary
-                                                      .copyWith(
-                                                    height: 1.5,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }),
-                                    );
-                                  },
-                                ).then((value){
-                                  if(context.mounted){
-                                    context.read<GetMarkCubit>().getMark();
-                                  }
-                                });
+                                showCustomBottomSheet(
+                                  context,
+                                  i,
+                                  e,
+                                );
                               }
                               ..onLongPressDown = (details) {
                                 setState(() {
@@ -248,12 +133,14 @@ class _QuranBodyState extends State<QuranBody> {
                             text: i == e["start"]
                                 ? "${getVerseQCF(e["surah"], i).replaceAll(' ', '').substring(0, 1)}\u200A${getVerseQCF(e["surah"], i).replaceAll(' ', '').substring(1)}"
                                 : getVerseQCF(e["surah"], i)
-                                    .replaceAll(' ', ''),
+                                .replaceAll(' ', ''),
                             style: TextStyle(
                               color: AppColorHelper.quranTextColor,
                               fontFamily:
                                   "QCF_P${index.toString().padLeft(3, "0")}",
-                              fontSize: 22.sp,
+                              fontSize: MediaQuery.sizeOf(context).width < 600
+                                  ? 22.sp
+                                  : 19.9.sp,
                               backgroundColor:
                                   selectedSpan == " ${e["surah"]}$i"
                                       ? AppColorHelper.coffeeColor
@@ -285,25 +172,132 @@ class _QuranBodyState extends State<QuranBody> {
       ),
     );
   }
-}
 
-String getVerseElsa3dyTranslation(int surahNumber, int verseNumber,
-    {bool verseEndSymbol = false}) {
-  List<dynamic> translationDataList = elSa3dy;
-  String verse = "";
-  for (var item in translationDataList) {
-    if (item['sura'].toString() == surahNumber.toString() &&
-        item['aya'].toString() == verseNumber.toString()) {
-      verse = item['text'];
-      break;
+  showCustomBottomSheet(
+    BuildContext context,
+    int i,
+    Map<String, dynamic> e,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      builder: (context) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => AddMarkCubit(),
+            ),
+            BlocProvider(
+              create: (context) => GetMarkCubit()..getMark(),
+            ),
+          ],
+          child: Builder(builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'تفسير السعدي للآية رقم $i',
+                          style: AppTextStyleHelper.font16BoldPrimary,
+                        ),
+                        BlocBuilder<GetMarkCubit, GetMarkStates>(
+                            builder: (context, state) {
+                          if (state is GetMarkSuccessState) {
+                            if (state.mark.surah == e["surah"] &&
+                                state.mark.ayah == i &&
+                                state.mark.page == index) {
+                              return IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.bookmark,
+                                  color: AppColorHelper.primaryColor,
+                                  size: 30.sp,
+                                ),
+                              );
+                            }
+                            return BlocConsumer<AddMarkCubit, AddMarkState>(
+                              builder: (context, addState) {
+                                return IconButton(
+                                  onPressed: () {
+                                    context.read<AddMarkCubit>().addMark(
+                                          mark: QuranMarkModel(
+                                            id: 0,
+                                            surah: e["surah"],
+                                            ayah: i,
+                                            page: index,
+                                          ),
+                                        );
+                                  },
+                                  icon: Icon(
+                                    Icons.bookmark_border_outlined,
+                                    color: AppColorHelper.primaryColor,
+                                    size: 30.sp,
+                                  ),
+                                );
+                              },
+                              listener: (context, addState) {
+                                if (addState is AddMarkSuccessState) {
+                                  context.read<GetMarkCubit>().getMark();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('تم تحديد العلامة بنجاح'),
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }
+                          return const SizedBox();
+                        }),
+                      ],
+                    ),
+                    Text(
+                      getVerseElsa3dyTranslation(
+                        e["surah"],
+                        i,
+                        verseEndSymbol: true,
+                      ),
+                      style: AppTextStyleHelper.font16RegularPrimary.copyWith(
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    ).then((value) {
+      if (context.mounted) {
+        context.read<GetMarkCubit>().getMark();
+      }
+    });
+  }
+
+  String getVerseElsa3dyTranslation(int surahNumber, int verseNumber,
+      {bool verseEndSymbol = false}) {
+    List<dynamic> translationDataList = elSa3dy;
+    String verse = "";
+    for (var item in translationDataList) {
+      if (item['sura'].toString() == surahNumber.toString() &&
+          item['aya'].toString() == verseNumber.toString()) {
+        verse = item['text'];
+        break;
+      }
     }
-  }
 
-  if (verse == "") {
-    return "";
+    if (verse == "") {
+      return "";
+    }
+    return verse +
+        (verseEndSymbol
+            ? getVerseEndSymbol(verseNumber, arabicNumeral: false)
+            : "");
   }
-  return verse +
-      (verseEndSymbol
-          ? getVerseEndSymbol(verseNumber, arabicNumeral: false)
-          : "");
 }

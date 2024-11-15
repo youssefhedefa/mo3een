@@ -42,7 +42,7 @@ class HomeDataView extends StatelessWidget {
         if (state is GetHomeDataErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('من فضلك تاكد من تفعيل الموقع الخاص بك وحاول مرة اخري'),
+              content: Text('من فضلك تاكد من تفعيل الانترنت والموقع الخاص بك وحاول مرة اخري'),
             ),
           );
         }

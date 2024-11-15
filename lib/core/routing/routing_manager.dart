@@ -9,6 +9,7 @@ import 'package:mo3een/features/azkar/presentation/cubits/zekr_counter_cubit/zek
 import 'package:mo3een/features/azkar/presentation/ui/azkar_data.dart';
 import 'package:mo3een/features/on_boarding/presentation/on_boarding_view.dart';
 import 'package:mo3een/features/quran/data/models/quran_page_model.dart';
+import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/search_cubit/search_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/search_tabs_cubit/search_tabs_cubit.dart';
 import 'package:mo3een/features/quran/presentation/quran_page.dart';
@@ -50,7 +51,10 @@ class AppRoutingManager {
         final page = settings.arguments as QuranPageModel;
         return CustomPageRoute(
           axisDirection: AxisDirection.left,
-          child: QuranPage(page: page),
+          child: BlocProvider(
+            create: (context) => GetMarkCubit(),
+              child: QuranPage(page: page),
+          ),
         );
       case AppRoutingConstances.zekrPage:
         final zekr = settings.arguments as ZekrItemModel;

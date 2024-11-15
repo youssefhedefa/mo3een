@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
@@ -19,7 +20,7 @@ class QuranView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: REdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
             const SizedBox(
@@ -32,7 +33,7 @@ class QuranView extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             const ContinueReading(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, AppRoutingConstances.search).then((_){
@@ -45,9 +46,9 @@ class QuranView extends StatelessWidget {
                 enabled: false,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             const CustomTabBar(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             BlocBuilder<QuranTabsCubit, QuranTabsState>(
                 builder: (context, state) {
               if (state is QuranBySurahState) {

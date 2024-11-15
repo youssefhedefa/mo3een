@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/components/widgets/custom_loading.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/features/quran/data/models/quran_page_model.dart';
@@ -40,8 +41,8 @@ class AllSurahList extends StatelessWidget {
               },
             ),
             padding: EdgeInsets.zero,
-            separatorBuilder: (context, index) => const SizedBox(
-              height: 12,
+            separatorBuilder: (context, index) => SizedBox(
+              height: 12.h,
             ),
             itemCount: state.surahs.length,
           ),

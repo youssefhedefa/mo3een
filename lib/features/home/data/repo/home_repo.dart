@@ -34,18 +34,20 @@ class HomeRepo {
 
   Future<Either<String, HomeDataModel>> _getHomeDataFromNetwork() async {
     try {
-      //CachedHomeData cachedHomeData = CachedHomeData();
+      log('getHomeDataFromNetwork called');
       Position position = await locationHelper.getCurrentPosition();
+      log('position: $position');
       String location = await locationHelper.getAddressFromLanLat(
         longitude: position.longitude,
         latitude: position.latitude,
       );
+      log('location: $location');
       final response = await service
           .getPrayerTimes(
             latitude: position.latitude,
             longitude: position.longitude,
-          )
-          .timeout(const Duration(seconds: 20));
+          );
+      log('response: ${response.data}');
       if (response.data is String) {
         return Left(response.data.toString());
       }
@@ -103,12 +105,10 @@ class HomeRepo {
     } on TimeoutException catch (e) {
       log('error here on time ex ${e.toString()}');
       getPrayersTimesFlag = true;
-      // return Left(e.toString());
       return _getHomeDataFromCache();
     } catch (e) {
       log('error here ?? ${e.toString()}');
       getPrayersTimesFlag = true;
-      // return Left(e.toString());
       return _getHomeDataFromCache();
     }
   }

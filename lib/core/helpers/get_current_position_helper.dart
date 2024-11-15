@@ -3,9 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationHelper {
-  int counter = 0;
   Future<bool> checkLocationPermission() async {
-    counter++;
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     log('serviceEnabled $serviceEnabled');
     LocationPermission permission = await Geolocator.checkPermission();
@@ -19,21 +17,23 @@ class LocationHelper {
       ].contains(permission)) {
         await Geolocator.openAppSettings();
         permission = await Geolocator.requestPermission();
-        if (counter > 2) {
+        if (permission == LocationPermission.denied) {
           return false;
         }
-        return await checkLocationPermission();
       }
     }
+    log('permission 2 $permission');
     return true;
   }
 
   Future<Position> getCurrentPosition() async {
+    log('getCurrentPosition called');
     await checkLocationPermission();
+    log('checkLocationPermission done');
     return await Geolocator.getCurrentPosition(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
-        timeLimit: Duration(seconds: 10),
+        timeLimit: Duration(seconds: 30),
       ),
     );
   }

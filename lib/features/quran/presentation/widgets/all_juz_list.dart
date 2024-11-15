@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/core/utilities/constants.dart';
@@ -44,8 +45,8 @@ class AllJuzList extends StatelessWidget {
             ),
           ),
         ),
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 12,
+        separatorBuilder: (context, index) => SizedBox(
+          height: 12.h,
         ),
         itemCount: AppConstants.juzNumbers.length,
       ),

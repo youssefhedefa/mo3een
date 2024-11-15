@@ -36,10 +36,10 @@ class _CurrentLocationMarkerState extends State<CurrentLocationMarker> {
       height: 60.h,
       child: Row(
         children: [
-          const Icon(
+          Icon(
             Icons.location_on,
             color: AppColorHelper.primaryColor,
-            size: 24,
+            size: 24.sp,
           ),
           const SizedBox(width: 4),
           Text(
@@ -69,10 +69,10 @@ class _CurrentLocationMarkerState extends State<CurrentLocationMarker> {
                 }
               }
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.refresh,
               color: AppColorHelper.primaryColor,
-              size: 24,
+              size: 24.sp,
             ),
           ),
         ],

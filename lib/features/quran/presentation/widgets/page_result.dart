@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
+import 'package:mo3een/features/quran/data/models/quran_page_model.dart';
 import 'package:quran/quran.dart';
 
 
@@ -24,7 +25,11 @@ class PageResult extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pushNamed(
               AppRoutingConstances.quranPage,
-              arguments: number,
+              arguments: QuranPageModel(
+                pageNumber: number.toInt(),
+                suraNumber: getPageData(number.toInt())[0]['surah'],
+                ayahNumber: getPageData(number.toInt())[0]['ayah'],
+              ),
             );
           },
           child: Text(

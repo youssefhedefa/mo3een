@@ -11,6 +11,7 @@ class InitialSearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 16),
         CustomSearchField(
           enabled: true,
           onChanged: (query) {

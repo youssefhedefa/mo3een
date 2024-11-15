@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/features/quran/domain/entities/sura_entity.dart';
 import 'package:quran/quran.dart';
 
@@ -11,6 +12,7 @@ class SurahHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
+      width: MediaQuery.of(context).size.width,
       child: Stack(
         children: [
           Center(
@@ -18,6 +20,7 @@ class SurahHeader extends StatelessWidget {
               "assets/images/888-02.png",
               width: MediaQuery.of(context).size.width,
               height: 50,
+              fit: BoxFit.fill,
             ),
           ),
           Padding(
@@ -28,23 +31,37 @@ class SurahHeader extends StatelessWidget {
                 Text(
                   textAlign: TextAlign.center,
                   "اياتها\n${getVerseCount(surah.number)}",
-                  style: const TextStyle(
-                      fontSize: 5, fontFamily: "UthmanicHafs13"),
+                  style: TextStyle(
+                   fontSize: MediaQuery.sizeOf(context).width < 600
+                      ? 5
+                      : 5.sp,
+                    fontFamily: "UthmanicHafs13",
+                  ),
                 ),
                 Center(
-                    child: RichText(
-                        text: TextSpan(
-                  text: surah.name,
-
-                  // textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontFamily: "arsura", fontSize: 22, color: Colors.black),
-                ))),
+                  child: RichText(
+                    text: TextSpan(
+                      text: surah.name,
+                      // textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "arsura",
+                        fontSize: MediaQuery.sizeOf(context).width < 600
+                            ? 21.sp
+                            : 19.sp,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
                 Text(
                   "ترتيبها\n${surah.name}",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 5, fontFamily: "UthmanicHafs13"),
+                  style: TextStyle(
+                    fontSize: MediaQuery.sizeOf(context).width < 600
+                        ? 5
+                        : 5.sp,
+                    fontFamily: "UthmanicHafs13",
+                  ),
                 ),
               ],
             ),

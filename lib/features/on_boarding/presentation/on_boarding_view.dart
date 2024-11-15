@@ -22,13 +22,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   ];
 
   final List<String> titles = [
-    ' تطبيق مُعيِّن ',
+    ' تطبيق مُعيِن ',
     'السبحة الالكترونية ',
     'تحديد موقعك',
   ];
 
   final List<String> descriptions = [
-    'يحتوي تطبيق مُعيِّن على المصحف الشريف وخاصية مواقيت الصلاة والادعية والأذكار وتحديد اتجاه القبلة وغيرها ...',
+    'يحتوي تطبيق مُعيِن على المصحف الشريف وخاصية مواقيت الصلاة والادعية والأذكار وتحديد اتجاه القبلة وغيرها ...',
     'يوجد ميزة السبحة الالكترونية للتسبيح ويمكنك اضافة الاذكار الخاصة بك',
     'يتم استخدام الموقع الجغرافي الخاص بك حتى يتم تحديد مواقيت الصلاة واتجاه القبلة في بلدك',
   ];
@@ -99,9 +99,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       () {
                         _pageController.nextPage(
                           duration: const Duration(
-                            milliseconds: 300,
+                            milliseconds: 450,
                           ),
-                          curve: Curves.fastLinearToSlowEaseIn,
+                          curve: Curves.easeInOutCubic,
                         );
                       },
                     );
