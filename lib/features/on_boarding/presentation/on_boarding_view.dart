@@ -39,17 +39,58 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        controller: _pageController,
-        itemCount: _images.length,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-        itemBuilder: (context, index) {
-          return _buildPage(index);
-        },
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: _images.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                return _buildPage(index);
+              },
+            ),
+          ),
+          Padding(
+            padding: REdgeInsets.only(
+              left: 24.w,
+              right: 24.w,
+              bottom: 24.h,
+            ),
+            child: AddSep7aZekrButton(
+              title: _currentPage != 2 ? 'متابعة' : 'لنبدأ الان ',
+              onPressed: () {
+                if (_currentPage == 2) {
+                  final box = Hive.box(AppBoxConstants.onBoardingBox);
+                  box.put(0, true).then((_) {
+                    if (context.mounted) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutingConstances.home, (route) => false);
+                    }
+                  });
+                  return;
+                }
+                setState(
+                  () {
+                    _pageController.nextPage(
+                      duration: const Duration(
+                        milliseconds: 450,
+                      ),
+                      curve: Curves.easeInOutCubic,
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 24.h,
+          ),
+        ],
       ),
     );
   }
@@ -57,6 +98,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _buildPage(int index) {
     return Column(
       children: [
+        SizedBox(
+          height: 70.h,
+        ),
         Expanded(
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -65,7 +109,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         ),
         Expanded(
           child: Padding(
-            padding: REdgeInsets.all(24.h),
+            padding: REdgeInsets.only(
+              left: 24.w,
+              right: 24.w,
+              bottom: 24.h,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -82,34 +130,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   textAlign: TextAlign.center,
                 ),
                 const Spacer(),
-                AddSep7aZekrButton(
-                  title: _currentPage != 2 ? 'متابعة' : 'لنبدأ الان ',
-                  onPressed: () {
-                    if (_currentPage == 2) {
-                      final box = Hive.box(AppBoxConstants.onBoardingBox);
-                      box.put(0, true).then((_) {
-                        if(context.mounted){
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              AppRoutingConstances.home, (route) => false);
-                        }
-                      });
-                      return;
-                    }
-                    setState(
-                      () {
-                        _pageController.nextPage(
-                          duration: const Duration(
-                            milliseconds: 450,
-                          ),
-                          curve: Curves.easeInOutCubic,
-                        );
-                      },
-                    );
-                  },
-                ),
-                SizedBox(
-                  height: 24.h,
-                ),
               ],
             ),
           ),
