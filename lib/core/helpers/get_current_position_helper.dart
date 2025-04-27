@@ -1,6 +1,9 @@
 import 'dart:developer';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz;
 
 class LocationHelper {
   Future<bool> checkLocationPermission() async {
@@ -51,6 +54,16 @@ class LocationHelper {
     } catch (e) {
       log("getAddressFromLanLat() $e");
       return "القاهره, مصر";
+    }
+  }
+
+  Future<String> getLocal() async {
+    try {
+      final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+      return currentTimeZone;
+    } catch (e) {
+      log("getLocal() $e");
+      return "Africa/Cairo";
     }
   }
 }
