@@ -15,6 +15,7 @@ import 'package:mo3een/features/home/presentation/cubits/get_date_cubit/get_date
 import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_random_verse_cubit/get_random_verse_cubit.dart';
 import 'package:mo3een/features/home/presentation/home.dart';
+import 'package:mo3een/features/more/presentation/ui/more_view.dart';
 import 'package:mo3een/features/qibla/presentation/ui/qibla_view.dart';
 import 'package:mo3een/features/quran/presentation/cubits/add_mark_cubit/add_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
@@ -24,7 +25,7 @@ import 'package:mo3een/features/quran/presentation/quran_view.dart';
 import 'package:mo3een/features/sep7a/presentation/cubit/get_sep7a_azkar_cubit/get_sep7a_azkar_cubit.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/sep7a_view.dart';
 
-class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
+class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   BottomNavBarCubit() : super(BottomNavBarInitialState());
 
   List<BottomNavBarItemModel> bottomNavBarItems = [
@@ -55,24 +56,31 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
     ),
   ];
 
-  List<Widget> screens =[
+  List<Widget> screens = [
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => GetDateCubit()..getInitialDate()),
-        BlocProvider(create: (context) => getIt<GetHomeDataCubit>()..getHomeData()),
-        BlocProvider(create: (context) => GetRandomVerseCubit()..getRandomVerseCall()),
+        BlocProvider(
+          create: (context) => getIt<GetHomeDataCubit>()..getHomeData(),
+        ),
+        BlocProvider(
+          create: (context) => GetRandomVerseCubit()..getRandomVerseCall(),
+        ),
       ],
       child: const HomeView(),
       //child: const HomeViewTest(),
     ),
     MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => getIt<GetAllSurahsCubit>()..getAllSurahs()),
-          BlocProvider(create: (context) => QuranTabsCubit(),),
-          BlocProvider(create: (context) => AddMarkCubit(),),
-          BlocProvider(create: (context) => GetMarkCubit()..getMark(),),
-        ],
-        child: const QuranView(),),
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<GetAllSurahsCubit>()..getAllSurahs(),
+        ),
+        BlocProvider(create: (context) => QuranTabsCubit()),
+        BlocProvider(create: (context) => AddMarkCubit()),
+        BlocProvider(create: (context) => GetMarkCubit()..getMark()),
+      ],
+      child: const QuranView(),
+    ),
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AzkarTabsCubit()),
@@ -80,22 +88,24 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
         BlocProvider(create: (context) => GetAllAzkarCubit()..getAllAzkar()),
         BlocProvider(create: (context) => AddZekrToSavedCubit()),
         BlocProvider(create: (context) => DeleteZekrFromSavedCubit()),
-        BlocProvider(create: (context) => GetAllSavedAzkarCubit()..getAllSavedAzkar()),
+        BlocProvider(
+          create: (context) => GetAllSavedAzkarCubit()..getAllSavedAzkar(),
+        ),
       ],
-        child: const AzkarView(),
+      child: const AzkarView(),
     ),
     BlocProvider(
       create: (context) => GetSep7aAzkarCubit()..getSep7aAzkar(),
-        child: const Sep7aView(),
+      child: const Sep7aView(),
     ),
-    const QiblaView(),
+    const MoreView(),
   ];
 
-  void changeNavBarItem(int index){
-    emit(BottomNavBarChangeIndexState(
-      index: index,
-      view: screens[index],
-    ));
+  void changeNavBarItem(int index) {
+    emit(BottomNavBarChangeIndexState(index: index, view: screens[index]));
   }
 
+  void showQiblaFromMore() {
+    emit(BottomNavBarChangeIndexState(index: 4, view: const QiblaView()));
+  }
 }
