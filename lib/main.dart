@@ -43,6 +43,7 @@ void main() async {
     Hive.openBox<PrayerModel>(AppBoxConstants.prayersBox),
     Hive.openBox<HomeDataModel>(AppBoxConstants.homeDataBox),
     Hive.openBox(AppBoxConstants.onBoardingBox),
+    Hive.openBox(AppBoxConstants.notificationSettingsBox),
   ]);
   runApp(
     EasyLocalization(
