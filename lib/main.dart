@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mo3een/core/managers/di.dart';
@@ -11,6 +12,7 @@ import 'package:mo3een/core/utilities/constants.dart';
 import 'package:mo3een/features/azkar/data/model/azkar_model.dart';
 import 'package:mo3een/features/home/data/models/home_data_model.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
+import 'package:mo3een/features/home/data/services/notification_service.dart';
 import 'package:mo3een/features/quran/data/models/quran_mark_model.dart';
 import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/mo3een_app.dart';
@@ -19,6 +21,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   changeSystemUiOverlayStyle();
   Bloc.observer = MyBlocObserver();
+  NotificationServiceContract notificationService = NotificationService(
+    flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
+  );
+  await notificationService.initNotification();
   await Hive.initFlutter();
   await ScreenUtil.ensureScreenSize();
   await EasyLocalization.ensureInitialized();

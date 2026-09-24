@@ -4,10 +4,10 @@ description: "A new Flutter project."
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.1.0+2
+version: 1.1.0+1
 
 environment:
-  sdk: ^3.5.3
+  sdk: ^3.10.4
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -20,32 +20,36 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   flutter_svg: ^2.0.10+1
-  bloc: ^8.1.4
-  flutter_bloc: ^8.1.6
+  bloc: ^9.2.1
+  flutter_bloc: ^9.1.1
   easy_localization: ^3.0.7
   flutter_screenutil: ^5.9.3
   hijri: ^3.0.0
-  intl: ^0.19.0
+  intl: ^0.20.3
   lottie: ^3.1.2
   quran:
     git:
       url: https://github.com/youssefhedefa/quran_package
       ref: main
-  get_it: ^8.0.0
+  get_it: ^9.3.0
   string_validator: ^0.3.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider_android: any
   shared_preferences_android: any
   flutter_qiblah: ^3.0.4
-  permission_handler: ^11.3.1
-  geocoding: ^3.0.0
-  geolocator: ^13.0.1
+  permission_handler: 12.0.1
+  geocoding: ^5.0.0
+  geolocator: ^14.0.3
   dio: ^5.7.0
   pretty_dio_logger: ^1.4.0
   dartz: ^0.10.1
-  connectivity_plus: ^6.1.0
+  connectivity_plus: ^7.3.1
   flutter_native_splash: ^2.4.2
+  flutter_local_notifications: ^22.3.1
+  timezone: ^0.11.1
+  flutter_timezone: ^5.1.0
+  flutter_notification_channel: ^3.1.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +71,7 @@ flutter:
 
   assets:
     - assets/fonts/
+    - assets/audio/
     - assets/icons/
     - assets/images/
     - assets/images/1.5x/

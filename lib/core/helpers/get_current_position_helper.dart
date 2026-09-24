@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -13,7 +15,7 @@ class LocationHelper {
       if ([
         LocationPermission.denied,
         LocationPermission.unableToDetermine,
-        LocationPermission.deniedForever
+        LocationPermission.deniedForever,
       ].contains(permission)) {
         await Geolocator.openAppSettings();
         permission = await Geolocator.requestPermission();
@@ -38,19 +40,32 @@ class LocationHelper {
     );
   }
 
-  Future<String> getAddressFromLanLat(
-      {required num longitude, required num latitude}) async {
+  Future<String> getAddressFromLanLat({
+    required num longitude,
+    required num latitude,
+  }) async {
     try {
-      await setLocaleIdentifier("ar_EG");
-      List<Placemark> placeMarks = await placemarkFromCoordinates(
+      final geocoding = Geocoding(locale: const Locale('ar', 'EG'));
+      List<Placemark> placeMarks = await geocoding.placemarkFromCoordinates(
         latitude.toDouble(),
         longitude.toDouble(),
+        locale: const Locale('ar', 'EG'),
       );
       Placemark place = placeMarks[0];
       return "${place.administrativeArea}, ${place.country}";
     } catch (e) {
-      log("getAddressFromLanLat() $e");
       return "القاهره, مصر";
+    }
+  }
+
+  Future<String> getLocal() async {
+    try {
+      final String currentTimeZone =
+          (await FlutterTimezone.getLocalTimezone()).identifier;
+      return currentTimeZone;
+    } catch (e) {
+      log("getLocal() $e");
+      return "Africa/Cairo";
     }
   }
 }

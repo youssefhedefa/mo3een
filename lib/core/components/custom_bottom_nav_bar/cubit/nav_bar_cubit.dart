@@ -49,8 +49,8 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates>{
       isSelected: false,
     ),
     BottomNavBarItemModel(
-      title: 'قبلة الصلاة',
-      icon: AppIconHelper.qeplaIcon,
+      title: 'المزيد',
+      icon: AppIconHelper.moreIcon,
       isSelected: false,
     ),
   ];

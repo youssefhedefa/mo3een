@@ -80,7 +80,7 @@ class AzkarView extends StatelessWidget {
                         if (state.azkarList.isEmpty) {
                           return Center(
                             child: Text(
-                              'لا يوجد أذكار محفوظة',
+                              'لا توجد أذكار محفوظة',
                               style: AppTextStyleHelper.font16BoldPrimary,
                             ),
                           );

@@ -9,22 +9,24 @@ import 'package:mo3een/features/home/data/data_source/api/home_api_services.dart
 import 'package:mo3een/features/home/data/data_source/cached/cached_home_data.dart';
 import 'package:mo3een/features/home/data/models/home_data_model.dart';
 import 'package:mo3een/features/home/data/models/prayer_model.dart';
+import 'package:mo3een/features/home/data/services/notification_service.dart';
 
 class HomeRepo {
   HomeRepo({
     required this.service,
     required this.cachedHomeDataInstance,
     required this.locationHelper,
+    required this.notificationService,
   });
   final HomeApiServices service;
   final CachedHomeData cachedHomeDataInstance;
   final LocationHelper locationHelper;
+  final NotificationServiceContract notificationService;
 
   bool getPrayersTimesFlag = true;
   Future<Either<String, HomeDataModel>> getHomeData(
       {required bool refresh}) async {
     bool isConnected = await ConnectivityHelper.isConnected();
-    log('Connection is $isConnected');
     if (isConnected && (refresh || getPrayersTimesFlag)) {
       return _getHomeDataFromNetwork();
     } else {
@@ -34,20 +36,15 @@ class HomeRepo {
 
   Future<Either<String, HomeDataModel>> _getHomeDataFromNetwork() async {
     try {
-      log('getHomeDataFromNetwork called');
       Position position = await locationHelper.getCurrentPosition();
-      log('position: $position');
       String location = await locationHelper.getAddressFromLanLat(
         longitude: position.longitude,
         latitude: position.latitude,
       );
-      log('location: $location');
-      final response = await service
-          .getPrayerTimes(
-            latitude: position.latitude,
-            longitude: position.longitude,
-          );
-      log('response: ${response.data}');
+      final response = await service.getPrayerTimes(
+        latitude: position.latitude,
+        longitude: position.longitude,
+      );
       if (response.data is String) {
         return Left(response.data.toString());
       }
@@ -89,17 +86,24 @@ class HomeRepo {
           hisTurn: false,
         ),
       ];
-      PrayerModel nearestPrayer = _getNearestPrayer(prayers)
-          .firstWhere((element) => element.hisTurn == true,);
+      PrayerModel nearestPrayer = _getNearestPrayer(prayers).firstWhere(
+            (element) => element.hisTurn == true,
+      );
       HomeDataModel homeData = HomeDataModel(
         location: location,
         nextPrayer: nearestPrayer.prayer,
         nextPrayerTimeHoursLeft: _getRemainingTime(nearestPrayer).inHours,
         nextPrayerTimeMinutesLeft:
-            _getRemainingTime(nearestPrayer).inMinutes % 60,
+        _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(prayers),
       );
       cachedHomeDataInstance.cacheHomeData(homeData: homeData);
+      String local = await locationHelper.getLocal();
+      notificationService.scheduleDailyNotifications(
+        prayers: homeData.prayers!,
+        local: local,
+      );
+
       getPrayersTimesFlag = false;
       return Right(homeData);
     } on TimeoutException catch (e) {
@@ -119,16 +123,16 @@ class HomeRepo {
       for (var element in cachedHomeData.prayers!) {
         element.hisTurn = false;
       }
-      PrayerModel nearestPrayer = _getNearestPrayer(cachedHomeData.prayers!)
-          .firstWhere((element) {
-            return element.hisTurn == true;
-          });
+      PrayerModel nearestPrayer =
+      _getNearestPrayer(cachedHomeData.prayers!).firstWhere((element) {
+        return element.hisTurn == true;
+      });
       HomeDataModel homeData = HomeDataModel(
         location: cachedHomeData.location,
         nextPrayer: nearestPrayer.prayer,
         nextPrayerTimeHoursLeft: _getRemainingTime(nearestPrayer).inHours,
         nextPrayerTimeMinutesLeft:
-            _getRemainingTime(nearestPrayer).inMinutes % 60,
+        _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(cachedHomeData.prayers!),
       );
       return Right(homeData);
@@ -150,7 +154,7 @@ class HomeRepo {
   List<PrayerModel> _getNearestPrayer(List<PrayerModel> prayers) {
     PrayerModel nearestPrayer = _getNextPrayer(prayers) ?? prayers.first;
     prayers[prayers
-            .indexWhere((element) => element.prayer == nearestPrayer.prayer)]
+        .indexWhere((element) => element.prayer == nearestPrayer.prayer)]
         .hisTurn = true;
     return prayers;
   }
