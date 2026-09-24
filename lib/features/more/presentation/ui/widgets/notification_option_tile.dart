@@ -78,7 +78,7 @@ class _CompactToggle extends StatelessWidget {
       width: 42.w,
       height: 24.h,
       padding: REdgeInsets.all(3),
-      alignment: value ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: !value ? Alignment.centerRight : Alignment.centerLeft,
       decoration: BoxDecoration(
         color: value
             ? AppColorHelper.primaryColor

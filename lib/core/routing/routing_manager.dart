@@ -8,6 +8,7 @@ import 'package:mo3een/features/azkar/data/model/zekr_item_model.dart';
 import 'package:mo3een/features/azkar/presentation/cubits/zekr_counter_cubit/zekr_counter_cubit.dart';
 import 'package:mo3een/features/azkar/presentation/ui/azkar_data.dart';
 import 'package:mo3een/features/on_boarding/presentation/on_boarding_view.dart';
+import 'package:mo3een/features/qibla/presentation/ui/qibla_view.dart';
 import 'package:mo3een/features/quran/data/models/quran_page_model.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_mark_cubit/get_mark_cubit.dart';
 import 'package:mo3een/features/quran/presentation/cubits/search_cubit/search_cubit.dart';
@@ -18,10 +19,8 @@ import 'package:mo3een/features/sep7a/data/models/sep7a_model.dart';
 import 'package:mo3een/features/sep7a/presentation/ui/sep7a_counter.dart';
 
 class AppRoutingManager {
-
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
-
       case AppRoutingConstances.onBourding:
         return CustomPageRoute(
           axisDirection: AxisDirection.left,
@@ -37,9 +36,7 @@ class AppRoutingManager {
           axisDirection: AxisDirection.up,
           child: MultiBlocProvider(
             providers: [
-              BlocProvider(
-                create: (context) => getIt<SearchCubit>(),
-              ),
+              BlocProvider(create: (context) => getIt<SearchCubit>()),
               BlocProvider(
                 create: (context) => SearchTabsCubit()..initialSearchType(),
               ),
@@ -53,7 +50,7 @@ class AppRoutingManager {
           axisDirection: AxisDirection.left,
           child: BlocProvider(
             create: (context) => GetMarkCubit(),
-              child: QuranPage(page: page),
+            child: QuranPage(page: page),
           ),
         );
       case AppRoutingConstances.zekrPage:
@@ -62,18 +59,19 @@ class AppRoutingManager {
           axisDirection: AxisDirection.left,
           child: BlocProvider(
             create: (context) => ZekrCounterCubit(),
-            child: AzkarDataView(
-              zekr: zekr,
-            ),
+            child: AzkarDataView(zekr: zekr),
           ),
         );
       case AppRoutingConstances.sep7aCounter:
         final zkr = settings.arguments as Sep7aZekrModel;
         return CustomPageRoute(
           axisDirection: AxisDirection.left,
-          child: Sep7aCounter(
-            zkr: zkr,
-          ),
+          child: Sep7aCounter(zkr: zkr),
+        );
+      case AppRoutingConstances.qiblaPage:
+        return CustomPageRoute(
+          axisDirection: AxisDirection.left,
+          child: const QiblaView(),
         );
       default:
         return null;

@@ -104,8 +104,4 @@ class BottomNavBarCubit extends Cubit<BottomNavBarStates> {
   void changeNavBarItem(int index) {
     emit(BottomNavBarChangeIndexState(index: index, view: screens[index]));
   }
-
-  void showQiblaFromMore() {
-    emit(BottomNavBarChangeIndexState(index: 4, view: const QiblaView()));
-  }
 }

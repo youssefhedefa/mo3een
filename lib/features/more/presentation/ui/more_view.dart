@@ -5,6 +5,7 @@ import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_cubit
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/features/more/presentation/cubit/more_settings_cubit.dart';
 import 'package:mo3een/features/more/presentation/cubit/more_settings_state.dart';
 import 'package:mo3een/features/more/presentation/ui/widgets/more_option_tile.dart';
@@ -36,32 +37,34 @@ class _MoreViewBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Ø§Ù„Ù…Ø²ÙŠØ¯',
+                'المزيد',
                 textAlign: TextAlign.center,
                 style: AppTextStyleHelper.font16BoldPrimary,
               ),
               SizedBox(height: 31.h),
               Text(
-                'Ø§Ù„Ø®Ø¯Ù…Ø§Øª',
+                'الخدمات',
                 textAlign: TextAlign.right,
                 style: AppTextStyleHelper.font14BoldPrimary,
               ),
               SizedBox(height: 12.h),
               MoreOptionTile(
-                title: 'Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ù‚Ø¨Ù„Ø©',
+                title: 'اتجاه القبلة',
                 icon: AppIconHelper.compassIcon,
-                onTap: () =>
-                    context.read<BottomNavBarCubit>().showQiblaFromMore(),
+                onTap: () {
+                  // context.read<BottomNavBarCubit>().showQiblaFromMore();
+                  Navigator.pushNamed(context, AppRoutingConstances.qiblaPage);
+                },
               ),
               SizedBox(height: 20.h),
               Text(
-                'Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª',
+                'الإشعارات',
                 textAlign: TextAlign.right,
                 style: AppTextStyleHelper.font14BoldPrimary,
               ),
               SizedBox(height: 8.h),
               Text(
-                'Ø§Ø®ØªØ± Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØªÙŠ ØªØ±ØºØ¨ ÙÙŠ Ø§Ø³ØªÙ„Ø§Ù…Ù‡Ø§',
+                'اختر التنبيهات التي ترغب في استلامها',
                 textAlign: TextAlign.right,
                 style: AppTextStyleHelper.font12RegularPrimary.copyWith(
                   fontSize: 11.sp,
@@ -75,19 +78,19 @@ class _MoreViewBody extends StatelessWidget {
                   return Column(
                     children: [
                       NotificationOptionTile(
-                        title: 'Ø¥Ø´Ø¹Ø§Ø±Ø§Øª Ø£ÙˆÙ‚Ø§Øª Ø§Ù„ØµÙ„Ø§Ø©',
+                        title: 'إشعارات أوقات الصلاة',
                         value: state.prayerNotificationsEnabled,
                         onChanged: cubit.setPrayerNotifications,
                       ),
                       SizedBox(height: 12.h),
                       NotificationOptionTile(
-                        title: 'ØªØ°ÙƒÙŠØ± Ø£Ø°ÙƒØ§Ø± Ø§Ù„ØµØ¨Ø§Ø­',
+                        title: 'تذكير أذكار الصباح',
                         value: state.morningAzkarEnabled,
                         onChanged: cubit.setMorningAzkarNotifications,
                       ),
                       SizedBox(height: 12.h),
                       NotificationOptionTile(
-                        title: 'ØªØ°ÙƒÙŠØ± Ø£Ø°ÙƒØ§Ø± Ø§Ù„Ù…Ø³Ø§Ø¡',
+                        title: 'تذكير أذكار المساء',
                         value: state.eveningAzkarEnabled,
                         onChanged: cubit.setEveningAzkarNotifications,
                       ),
