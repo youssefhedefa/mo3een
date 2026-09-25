@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:mo3een/core/managers/di.dart';
@@ -21,14 +20,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   changeSystemUiOverlayStyle();
   Bloc.observer = MyBlocObserver();
-  NotificationServiceContract notificationService = NotificationService(
-    flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
-  );
-  await notificationService.initNotification();
   await Hive.initFlutter();
   await ScreenUtil.ensureScreenSize();
   await EasyLocalization.ensureInitialized();
   await setupDependencyInjection();
+  await getIt<NotificationServiceContract>().initNotification();
   Hive.registerAdapter(QuranMarkModelAdapter());
   Hive.registerAdapter(AzkarModelAdapter());
   Hive.registerAdapter(ZekrItemAdapter());

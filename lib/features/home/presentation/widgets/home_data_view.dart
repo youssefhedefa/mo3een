@@ -32,9 +32,7 @@ class HomeDataView extends StatelessWidget {
           );
         }
         if (state is GetHomeDataSuccessState) {
-          return HomeDataRepresentative(
-            data: state.data,
-          );
+          return HomeDataRepresentative(data: state.data);
         }
         return const SizedBox();
       },
@@ -42,7 +40,9 @@ class HomeDataView extends StatelessWidget {
         if (state is GetHomeDataErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('من فضلك تاكد من تفعيل الانترنت والموقع الخاص بك وحاول مرة اخري'),
+              content: Text(
+                'من فضلك تاكد من تفعيل الانترنت والموقع الخاص بك وحاول مرة اخري',
+              ),
             ),
           );
         }
@@ -60,18 +60,14 @@ class HomeDataRepresentative extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CurrentLocationMarker(
-          address: data.location ?? "",
-        ),
+        CurrentLocationMarker(address: data.location ?? ""),
         NextSalahContainer(
           nextPrayer: data.nextPrayer ?? "",
           remainHours: data.nextPrayerTimeHoursLeft ?? 0,
           remainMinutes: data.nextPrayerTimeMinutesLeft ?? 0,
         ),
         const PickedDateViewer(),
-        PrayerTimesList(
-          prayers: data.prayers ?? [],
-        ),
+        PrayerTimesList(prayers: data.prayers ?? []),
       ],
     );
   }

@@ -16,39 +16,34 @@ class AllSurahList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetAllSurahsCubit, GetAllSurahsStates>(
-        builder: (context, state) {
-      if (state is GetAllSurahsLoadingState) {
-        return const Center(
-          child: CustomLoadingIndicator(),
-        );
-      }
-      if (state is GetAllSurahsSuccessState) {
-        return Expanded(
-          child: ListView.separated(
+      builder: (context, state) {
+        if (state is GetAllSurahsLoadingState) {
+          return const Center(child: CustomLoadingIndicator());
+        }
+        if (state is GetAllSurahsSuccessState) {
+          return ListView.separated(
             itemBuilder: (context, index) => SurahContainer(
               surah: state.surahs[index],
-              onTap: (){
+              onTap: () {
                 int page = getPageNumber(state.surahs[index].number, 1);
                 Navigator.pushNamed(
                   context,
                   AppRoutingConstances.quranPage,
                   arguments: QuranPageModel(pageNumber: page),
-                ).then((_){
-                  if(context.mounted){
+                ).then((_) {
+                  if (context.mounted) {
                     context.read<GetMarkCubit>().getMark();
                   }
                 });
               },
             ),
             padding: EdgeInsets.zero,
-            separatorBuilder: (context, index) => SizedBox(
-              height: 12.h,
-            ),
+            separatorBuilder: (context, index) => SizedBox(height: 12.h),
             itemCount: state.surahs.length,
-          ),
-        );
-      }
-      return const SizedBox();
-    });
+          );
+        }
+        return const SizedBox();
+      },
+    );
   }
 }

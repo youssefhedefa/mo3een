@@ -8,6 +8,7 @@ import 'package:mo3een/features/home/data/data_source/cached/cached_home_data.da
 import 'package:mo3een/features/home/data/repo/home_repo.dart';
 import 'package:mo3een/features/home/data/services/notification_service.dart';
 import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
+import 'package:mo3een/features/more/presentation/cubit/more_settings_cubit.dart';
 import 'package:mo3een/features/quran/data/repo_imple/quran_repo_imple.dart';
 import 'package:mo3een/features/quran/domain/repo/quran_repo.dart';
 import 'package:mo3een/features/quran/presentation/cubits/get_all_surahs_cubit/get_all_surahs_cubit.dart';
@@ -18,13 +19,19 @@ final getIt = GetIt.instance;
 Future<void> setupDependencyInjection() async {
   getIt.registerLazySingleton<QuranRepo>(() => QuranRepoImple());
   getIt.registerFactory<GetAllSurahsCubit>(
-      () => GetAllSurahsCubit(repo: getIt<QuranRepo>()));
+    () => GetAllSurahsCubit(repo: getIt<QuranRepo>()),
+  );
   getIt.registerFactory<SearchCubit>(
-      () => SearchCubit(repo: getIt<QuranRepo>()));
+    () => SearchCubit(repo: getIt<QuranRepo>()),
+  );
+  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(
+    FlutterLocalNotificationsPlugin.new,
+  );
   getIt.registerLazySingleton<NotificationServiceContract>(
-      () => NotificationService(
-            flutterLocalNotificationsPlugin: FlutterLocalNotificationsPlugin(),
-          ));
+    () => NotificationService(
+      flutterLocalNotificationsPlugin: getIt<FlutterLocalNotificationsPlugin>(),
+    ),
+  );
 
   Dio dio = await DioFactory.getDio();
 
@@ -34,13 +41,23 @@ Future<void> setupDependencyInjection() async {
 
   getIt.registerLazySingleton<LocationHelper>(() => LocationHelper());
 
-  getIt.registerLazySingleton<HomeRepo>(() => HomeRepo(
-        service: getIt<HomeApiServices>(),
-        cachedHomeDataInstance: getIt<CachedHomeData>(),
-        locationHelper: getIt<LocationHelper>(),
-        notificationService: getIt<NotificationServiceContract>(),
-      ));
+  getIt.registerFactory<MoreSettingsCubit>(
+    () => MoreSettingsCubit(
+      notificationService: getIt<NotificationServiceContract>(),
+      locationHelper: getIt<LocationHelper>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<HomeRepo>(
+    () => HomeRepo(
+      service: getIt<HomeApiServices>(),
+      cachedHomeDataInstance: getIt<CachedHomeData>(),
+      locationHelper: getIt<LocationHelper>(),
+      notificationService: getIt<NotificationServiceContract>(),
+    ),
+  );
 
   getIt.registerFactory<GetHomeDataCubit>(
-      () => GetHomeDataCubit(repo: getIt<HomeRepo>()));
+    () => GetHomeDataCubit(repo: getIt<HomeRepo>()),
+  );
 }

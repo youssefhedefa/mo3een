@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/components/widgets/custom_loading.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/helpers/image_helper.dart';
+import 'package:mo3een/features/home/presentation/cubits/get_home_data_cubit/get_home_data_cubit.dart';
 import 'package:mo3een/features/home/presentation/widgets/next_salah_text.dart';
 
 class NextSalahContainer extends StatefulWidget {
@@ -69,6 +71,10 @@ class _NextSalahContainerState extends State<NextSalahContainer> {
           _remainingTime -= const Duration(seconds: 1);
         } else {
           _timer?.cancel();
+          Future.delayed(const Duration(minutes: 1), () {
+            if (!mounted) return;
+            context.read<GetHomeDataCubit>().getHomeData(refresh: true);
+          });
         }
       });
     });
@@ -118,10 +124,7 @@ class _NextSalahContainerState extends State<NextSalahContainer> {
                 ),
           Expanded(
             child: Center(
-              child: Image.asset(
-                AppImageHelper.prayerImage,
-                fit: BoxFit.cover,
-              ),
+              child: Image.asset(AppImageHelper.prayerImage, fit: BoxFit.cover),
             ),
           ),
         ],

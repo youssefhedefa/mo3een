@@ -8,4 +8,5 @@ abstract class AppBoxConstants {
   static const String currentPositionBox = 'current_position_box';
   static const String homeDataBox = 'home_data_box';
   static const String notificationSettingsBox = 'notification_settings_box';
+  static const String prayerNotificationsKey = 'prayer_notifications';
 }

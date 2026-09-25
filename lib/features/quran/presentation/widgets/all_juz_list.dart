@@ -15,41 +15,37 @@ class AllJuzList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) => CustomContainer(
-          onTap: () {
-            List<SurahsFromJuzModel> surahsFromJuzModel =
-                getSurahAndVersesFromJuz(index + 1)
-                    .entries
-                    .map((e) => SurahsFromJuzModel.fromMap({e.key: e.value}))
-                    .toList();
-            int pageNumber = getPageNumber(surahsFromJuzModel[0].surahNumber, surahsFromJuzModel[0].verses[0]);
-            Navigator.pushNamed(
-              context,
-              AppRoutingConstances.quranPage,
-              arguments: QuranPageModel(
-                pageNumber: pageNumber,
-              ),
-            ).then((_){
-              if(context.mounted){
-                context.read<GetMarkCubit>().getMark();
-              }
-            });
-          },
-          child: Text(
-            AppConstants.juzNumbers[index],
-            style: AppTextStyleHelper.font16RegularPrimary.copyWith(
-              fontFamily: AppConstants.quranFontFamilyName,
-            ),
+    return ListView.separated(
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) => CustomContainer(
+        onTap: () {
+          List<SurahsFromJuzModel> surahsFromJuzModel =
+              getSurahAndVersesFromJuz(index + 1).entries
+                  .map((e) => SurahsFromJuzModel.fromMap({e.key: e.value}))
+                  .toList();
+          int pageNumber = getPageNumber(
+            surahsFromJuzModel[0].surahNumber,
+            surahsFromJuzModel[0].verses[0],
+          );
+          Navigator.pushNamed(
+            context,
+            AppRoutingConstances.quranPage,
+            arguments: QuranPageModel(pageNumber: pageNumber),
+          ).then((_) {
+            if (context.mounted) {
+              context.read<GetMarkCubit>().getMark();
+            }
+          });
+        },
+        child: Text(
+          AppConstants.juzNumbers[index],
+          style: AppTextStyleHelper.font16RegularPrimary.copyWith(
+            fontFamily: AppConstants.quranFontFamilyName,
           ),
         ),
-        separatorBuilder: (context, index) => SizedBox(
-          height: 12.h,
-        ),
-        itemCount: AppConstants.juzNumbers.length,
       ),
+      separatorBuilder: (context, index) => SizedBox(height: 12.h),
+      itemCount: AppConstants.juzNumbers.length,
     );
   }
 }

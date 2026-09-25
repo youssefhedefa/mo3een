@@ -1,104 +1,4 @@
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:flutter_timezone/flutter_timezone.dart';
-// import 'package:timezone/data/latest.dart' as tz;
-// import 'package:timezone/timezone.dart';
-// class NotificationService {
-//   late AndroidNotificationChannel channel;
-//
-//   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//       FlutterLocalNotificationsPlugin();
-//
-//   init() async {
-//     final requestNotificationPermission = await Permission.notification.status;
-//     if (requestNotificationPermission.isDenied ||
-//         requestNotificationPermission.isPermanentlyDenied) {
-//       final state = await Permission.notification.request();
-//       if (state.isDenied || state.isPermanentlyDenied) {
-//         return;
-//       }
-//     }
-//
-//     channel = const AndroidNotificationChannel(
-//       'notify',
-//       'High Importance Notifications',
-//       description: 'This channel is used for important notifications.',
-//       importance: Importance.high,
-//     );
-//
-//     const AndroidInitializationSettings initializationSettingsAndroid =
-//         AndroidInitializationSettings('launch_background');
-//     const DarwinInitializationSettings initializationSettingsIOS =
-//         DarwinInitializationSettings();
-//
-//     const InitializationSettings initializationSettings =
-//         InitializationSettings(
-//       android: initializationSettingsAndroid,
-//       iOS: initializationSettingsIOS,
-//     );
-//
-//     await flutterLocalNotificationsPlugin.initialize(
-//       initializationSettings,
-//       onDidReceiveNotificationResponse: (NotificationResponse response) {},
-//     );
-//
-//     await flutterLocalNotificationsPlugin
-//         .resolvePlatformSpecificImplementation<
-//             AndroidFlutterLocalNotificationsPlugin>()
-//         ?.createNotificationChannel(channel);
-//   }
-//
-//   showNotification() async {
-//     await flutterLocalNotificationsPlugin.show(
-//       0,
-//       'Hello',
-//       'How are you?',
-//       NotificationDetails(
-//         android: AndroidNotificationDetails(
-//           channel.id,
-//           channel.name,
-//           channelDescription: channel.description,
-//           importance: Importance.max,
-//           priority: Priority.high,
-//           enableVibration: true,
-//           fullScreenIntent: true,
-//           silent: false,
-//           playSound: true,
-//           sound: const RawResourceAndroidNotificationSound('el_3asr_notification'),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   scheduleNotification() async {
-//     final String currentTimeZone = await FlutterTimezone.getLocalTimezone();
-//     tz.initializeTimeZones();
-//     final local = getLocation(currentTimeZone);
-//     final scheduledDate = TZDateTime.now(local).add(const Duration(seconds: 10));
-//     print("scheduledDateeeeee $scheduledDate");
-//     await flutterLocalNotificationsPlugin.zonedSchedule(
-//       0,
-//       'Hello',
-//       'How are you?',
-//       scheduledDate,
-//       NotificationDetails(
-//         android: AndroidNotificationDetails(
-//           channel.id,
-//           channel.name,
-//           channelDescription: channel.description,
-//           importance: Importance.max,
-//           priority: Priority.high,
-//           enableVibration: true,
-//           playSound: true,
-//           sound: const RawResourceAndroidNotificationSound('el_3asr_notification'),
-//         ),
-//       ),
-//       androidScheduleMode: AndroidScheduleMode.alarmClock,
-//       matchDateTimeComponents: DateTimeComponents.time,
-//     );
-//   }
-//
-// }
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -109,56 +9,43 @@ import 'package:timezone/timezone.dart' as tz;
 
 abstract class NotificationServiceContract {
   Future<void> initNotification();
-  Future<void> showNotification();
-  Future<void> scheduleDailyNotifications({
+
+  Future<void> schedulePrayerReminders({
     required List<PrayerModel> prayers,
-    String? local,
+    required String timeZone,
   });
+
+  Future<void> cancelPrayerReminders();
 }
 
 class NotificationService implements NotificationServiceContract {
-  final FlutterLocalNotificationsPlugin _notificationPlugin;
-  late AndroidNotificationChannel channel;
-
   NotificationService({
     required FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
   }) : _notificationPlugin = flutterLocalNotificationsPlugin;
 
+  static const Map<String, int> _prayerNotificationIds = {
+    'الفجر': 1001,
+    'الظهر': 1002,
+    'العصر': 1003,
+    'المغرب': 1004,
+    'العشاء': 1005,
+  };
+  static const List<int> _legacyPrayerNotificationIds = [0, 1, 2, 3, 4, 5];
+  static const Duration _reminderOffset = Duration(minutes: 5);
+
+  final FlutterLocalNotificationsPlugin _notificationPlugin;
+  late final AndroidNotificationChannel _channel;
+
   @override
   Future<void> initNotification() async {
-    // cancel all previos notifications channels
-    // await _notificationPlugin.cancelAll();
-    if (Platform.isIOS) {
-      await _notificationPlugin
-          .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin
-          >()
-          ?.requestPermissions(alert: true, badge: true, sound: true);
-    } else if (Platform.isAndroid) {
-      bool? res = await _notificationPlugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >()
-          ?.requestNotificationsPermission();
-      if (res == null || res == false) {
-        PermissionStatus status = await Permission.notification.request();
-        if (!status.isGranted) {
-          openAppSettings();
-          return;
-        }
-      }
-    }
-
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-
     const DarwinInitializationSettings iosInitializationSettings =
         DarwinInitializationSettings(
           requestAlertPermission: true,
           requestBadgePermission: true,
           requestSoundPermission: true,
         );
-
     const InitializationSettings initializationSettings =
         InitializationSettings(
           android: androidInitializationSettings,
@@ -167,11 +54,11 @@ class NotificationService implements NotificationServiceContract {
 
     await _notificationPlugin.initialize(settings: initializationSettings);
 
-    channel = const AndroidNotificationChannel(
+    _channel = const AndroidNotificationChannel(
       'notify',
       'Azan Notifications',
       description: 'This channel is used for Azan notifications.',
-      importance: Importance.defaultImportance,
+      importance: Importance.high,
       audioAttributesUsage: AudioAttributesUsage.alarm,
       playSound: true,
       ledColor: Color(0xFFE4E028),
@@ -179,106 +66,170 @@ class NotificationService implements NotificationServiceContract {
       sound: RawResourceAndroidNotificationSound('el_3asr_notification'),
     );
 
-    await _notificationPlugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.createNotificationChannel(channel);
+    if (Platform.isIOS) {
+      await _notificationPlugin
+          .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin
+          >()
+          ?.requestPermissions(alert: true, badge: true, sound: true);
+    } else if (Platform.isAndroid) {
+      final AndroidFlutterLocalNotificationsPlugin? androidPlugin =
+          _notificationPlugin
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >();
+
+      await androidPlugin?.createNotificationChannel(_channel);
+
+      final bool? permissionGranted = await androidPlugin
+          ?.requestNotificationsPermission();
+      if (permissionGranted == false) {
+        final PermissionStatus status = await Permission.notification.request();
+        if (!status.isGranted) {
+          log('Notification permission was not granted.');
+        }
+      }
+    }
 
     tz.initializeTimeZones();
   }
 
   @override
-  showNotification() async {
-    await _notificationPlugin.show(
-      id: 0,
-      title: 'Hello',
-      body: 'How are you?',
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channelDescription: channel.description,
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-          sound: 'default',
-        ),
-      ),
-    );
-  }
-
-  @override
-  Future<void> scheduleDailyNotifications({
+  Future<void> schedulePrayerReminders({
     required List<PrayerModel> prayers,
-    String? local,
+    required String timeZone,
   }) async {
-    if (prayers.isEmpty) return;
-    for (int i = 0; i < prayers.length; i++) {
-      final PrayerModel prayer = prayers[i];
-      final int hour = int.parse(prayer.time.split(':')[0]);
-      final int minute = int.parse(prayer.time.split(':')[1]);
-      await _scheduleNotification(
-        id: i,
-        title: 'اقتربت صلاه ${prayer.prayer}',
-        body: 'اقتربت صلاه ${prayer.prayer}',
-        hour: hour,
-        minute: minute,
-        local: local,
+    await cancelPrayerReminders();
+
+    final tz.Location location = _getLocation(timeZone);
+    final tz.TZDateTime now = tz.TZDateTime.now(location);
+    final AndroidScheduleMode scheduleMode = await _getAndroidScheduleMode();
+
+    for (final PrayerModel prayer in prayers) {
+      final int? id = _prayerNotificationIds[prayer.prayer];
+      final ({int hour, int minute})? parsedTime = _parseTime(prayer.time);
+      if (id == null || parsedTime == null) {
+        continue;
+      }
+
+      final tz.TZDateTime reminderDate = _buildReminderDate(
+        location: location,
+        now: now,
+        hour: parsedTime.hour,
+        minute: parsedTime.minute,
+      );
+
+      await _notificationPlugin.zonedSchedule(
+        id: id,
+        title: 'اقتربت صلاة ${prayer.prayer}',
+        body: 'متبقي ٥ دقائق على صلاة ${prayer.prayer}',
+        scheduledDate: reminderDate,
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            _channel.id,
+            _channel.name,
+            channelDescription: _channel.description,
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+          iOS: const DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+            sound: 'default',
+          ),
+        ),
+        androidScheduleMode: scheduleMode,
+        matchDateTimeComponents: DateTimeComponents.time,
       );
     }
   }
 
-  Future<void> _scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
+  @override
+  Future<void> cancelPrayerReminders() async {
+    final Set<int> ids = {
+      ..._legacyPrayerNotificationIds,
+      ..._prayerNotificationIds.values,
+    };
+    for (final int id in ids) {
+      await _notificationPlugin.cancel(id: id);
+    }
+  }
+
+  tz.Location _getLocation(String timeZone) {
+    try {
+      return tz.getLocation(timeZone);
+    } catch (error) {
+      log('Unable to load timezone $timeZone: $error');
+      return tz.getLocation('Africa/Cairo');
+    }
+  }
+
+  ({int hour, int minute})? _parseTime(String value) {
+    final RegExpMatch? match = RegExp(
+      r'^(\d{1,2}):(\d{2})',
+    ).firstMatch(value.trim());
+    if (match == null) {
+      log('Unable to parse prayer time: $value');
+      return null;
+    }
+
+    final int hour = int.parse(match.group(1)!);
+    final int minute = int.parse(match.group(2)!);
+    if (hour > 23 || minute > 59) {
+      log('Prayer time is outside the valid range: $value');
+      return null;
+    }
+    return (hour: hour, minute: minute);
+  }
+
+  tz.TZDateTime _buildReminderDate({
+    required tz.Location location,
+    required tz.TZDateTime now,
     required int hour,
     required int minute,
-    String? local,
-  }) async {
-    final tz.TZDateTime now = tz.TZDateTime.now(
-      tz.getLocation(local ?? 'Africa/Cairo'),
-    );
-    tz.TZDateTime scheduledDate = tz.TZDateTime(
-      now.location,
+  }) {
+    tz.TZDateTime prayerDate = tz.TZDateTime(
+      location,
       now.year,
       now.month,
       now.day,
       hour,
-      minute - 5,
+      minute,
     );
+    tz.TZDateTime reminderDate = prayerDate.subtract(_reminderOffset);
 
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    if (!reminderDate.isAfter(now)) {
+      final tz.TZDateTime tomorrow = now.add(const Duration(days: 1));
+      prayerDate = tz.TZDateTime(
+        location,
+        tomorrow.year,
+        tomorrow.month,
+        tomorrow.day,
+        hour,
+        minute,
+      );
+      reminderDate = prayerDate.subtract(_reminderOffset);
     }
 
-    await _notificationPlugin.zonedSchedule(
-      id: id,
-      title: title,
-      body: body,
-      scheduledDate: scheduledDate,
-      notificationDetails: NotificationDetails(
-        android: AndroidNotificationDetails(
-          channel.id,
-          channel.name,
-          channelDescription: channel.description,
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
-        iOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentBadge: true,
-          presentSound: true,
-          sound: 'default',
-        ),
-      ),
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      // matchDateTimeComponents: DateTimeComponents.time,
-    );
+    return reminderDate;
+  }
+
+  Future<AndroidScheduleMode> _getAndroidScheduleMode() async {
+    if (!Platform.isAndroid) {
+      return AndroidScheduleMode.inexactAllowWhileIdle;
+    }
+
+    final bool canScheduleExactly =
+        await _notificationPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >()
+            ?.canScheduleExactNotifications() ??
+        false;
+
+    return canScheduleExactly
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
   }
 }

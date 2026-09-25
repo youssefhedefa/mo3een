@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mo3een/core/components/custom_bottom_nav_bar/cubit/nav_bar_cubit.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
 import 'package:mo3een/core/helpers/text_style_helper.dart';
+import 'package:mo3een/core/managers/di.dart';
 import 'package:mo3een/core/routing/routing_constances.dart';
 import 'package:mo3een/features/more/presentation/cubit/more_settings_cubit.dart';
 import 'package:mo3een/features/more/presentation/cubit/more_settings_state.dart';
@@ -17,7 +17,7 @@ class MoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MoreSettingsCubit(),
+      create: (_) => getIt<MoreSettingsCubit>(),
       child: const _MoreViewBody(),
     );
   }

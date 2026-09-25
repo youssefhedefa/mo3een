@@ -19,50 +19,102 @@ class QuranView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 66,
-              width: double.infinity,
-            ),
-            Text(
-              'القرآن الكريم',
-              style: AppTextStyleHelper.font16BoldPrimary,
-            ),
-            const SizedBox(height: 24),
-            const ContinueReading(),
-            SizedBox(height: 16.h),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, AppRoutingConstances.search).then((_){
-                  if(context.mounted){
-                    context.read<GetMarkCubit>().getMark();
-                  }
-                });
-              },
-              child: const CustomSearchField(
-                enabled: false,
+      body: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 24.0),
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 42, width: double.infinity),
+                    Text(
+                      'القرآن الكريم',
+                      style: AppTextStyleHelper.font16BoldPrimary,
+                    ),
+                    const SizedBox(height: 24),
+                    const ContinueReading(),
+                    SizedBox(height: 16.h),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutingConstances.search,
+                        ).then((_) {
+                          if (context.mounted) {
+                            context.read<GetMarkCubit>().getMark();
+                          }
+                        });
+                      },
+                      child: const CustomSearchField(enabled: false),
+                    ),
+                  ],
+                ),
               ),
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _QuranTabBarHeaderDelegate(
+                  height: 64.h,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+            ],
+            body: BlocBuilder<QuranTabsCubit, QuranTabsState>(
+              builder: (context, state) {
+                if (state is QuranBySurahState) {
+                  return const AllSurahList();
+                } else if (state is QuranByJuzState) {
+                  return const AllJuzList();
+                } else if (state is QuranByPageState) {
+                  return const QuranPagesList();
+                }
+                return const SizedBox();
+              },
             ),
-            SizedBox(height: 16.h),
-            const CustomTabBar(),
-            SizedBox(height: 16.h),
-            BlocBuilder<QuranTabsCubit, QuranTabsState>(
-                builder: (context, state) {
-              if (state is QuranBySurahState) {
-                return const AllSurahList();
-              } else if (state is QuranByJuzState) {
-                return const AllJuzList();
-              } else if (state is QuranByPageState) {
-                return const QuranPagesList();
-              }
-              return const SizedBox();
-            }),
-          ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class _QuranTabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
+  const _QuranTabBarHeaderDelegate({
+    required this.height,
+    required this.backgroundColor,
+  });
+
+  final double height;
+  final Color backgroundColor;
+
+  @override
+  double get minExtent => height;
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return ColoredBox(
+      color: backgroundColor,
+      child: Column(
+        children: [
+          SizedBox(height: 16.h),
+          const CustomTabBar(),
+          SizedBox(height: 16.h),
+        ],
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant _QuranTabBarHeaderDelegate oldDelegate) {
+    return height != oldDelegate.height ||
+        backgroundColor != oldDelegate.backgroundColor;
   }
 }

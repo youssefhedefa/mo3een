@@ -14,41 +14,37 @@ class QuranPagesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.separated(
-        padding: EdgeInsets.zero,
-        itemBuilder: (context, index) => CustomContainer(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SvgPicture.asset(
-                AppIconHelper.numberIcon,
-                width: 44.w,
-                height: 44.h,
-              ),
-              Text(
-                (index + 1).toString(),
-                style: AppTextStyleHelper.font16RegularPrimary,
-              ),
-            ],
-          ),
-          onTap: () {
-            Navigator.pushNamed(
-              context,
-              AppRoutingConstances.quranPage,
-              arguments: QuranPageModel(pageNumber: index + 1),
-            ).then((_){
-              if(context.mounted){
-                context.read<GetMarkCubit>().getMark();
-              }
-            });
-          },
+    return ListView.separated(
+      padding: EdgeInsets.zero,
+      itemBuilder: (context, index) => CustomContainer(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            SvgPicture.asset(
+              AppIconHelper.numberIcon,
+              width: 44.w,
+              height: 44.h,
+            ),
+            Text(
+              (index + 1).toString(),
+              style: AppTextStyleHelper.font16RegularPrimary,
+            ),
+          ],
         ),
-        separatorBuilder: (context, index) => SizedBox(
-          height: 12.h,
-        ),
-        itemCount: 604,
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRoutingConstances.quranPage,
+            arguments: QuranPageModel(pageNumber: index + 1),
+          ).then((_) {
+            if (context.mounted) {
+              context.read<GetMarkCubit>().getMark();
+            }
+          });
+        },
       ),
+      separatorBuilder: (context, index) => SizedBox(height: 12.h),
+      itemCount: 604,
     );
   }
 }

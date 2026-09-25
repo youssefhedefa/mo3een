@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hive/hive.dart';
 import 'package:mo3een/core/helpers/connectivity_helper.dart';
 import 'package:mo3een/core/helpers/get_current_position_helper.dart';
 import 'package:mo3een/core/helpers/icon_helper.dart';
+import 'package:mo3een/core/utilities/box_constants.dart';
 import 'package:mo3een/features/home/data/data_source/api/home_api_services.dart';
 import 'package:mo3een/features/home/data/data_source/cached/cached_home_data.dart';
 import 'package:mo3een/features/home/data/models/home_data_model.dart';
@@ -24,8 +26,9 @@ class HomeRepo {
   final NotificationServiceContract notificationService;
 
   bool getPrayersTimesFlag = true;
-  Future<Either<String, HomeDataModel>> getHomeData(
-      {required bool refresh}) async {
+  Future<Either<String, HomeDataModel>> getHomeData({
+    required bool refresh,
+  }) async {
     bool isConnected = await ConnectivityHelper.isConnected();
     if (isConnected && (refresh || getPrayersTimesFlag)) {
       return _getHomeDataFromNetwork();
@@ -86,23 +89,19 @@ class HomeRepo {
           hisTurn: false,
         ),
       ];
-      PrayerModel nearestPrayer = _getNearestPrayer(prayers).firstWhere(
-            (element) => element.hisTurn == true,
-      );
+      PrayerModel nearestPrayer = _getNearestPrayer(
+        prayers,
+      ).firstWhere((element) => element.hisTurn == true);
       HomeDataModel homeData = HomeDataModel(
         location: location,
         nextPrayer: nearestPrayer.prayer,
         nextPrayerTimeHoursLeft: _getRemainingTime(nearestPrayer).inHours,
         nextPrayerTimeMinutesLeft:
-        _getRemainingTime(nearestPrayer).inMinutes % 60,
+            _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(prayers),
       );
-      cachedHomeDataInstance.cacheHomeData(homeData: homeData);
-      String local = await locationHelper.getLocal();
-      notificationService.scheduleDailyNotifications(
-        prayers: homeData.prayers!,
-        local: local,
-      );
+      await cachedHomeDataInstance.cacheHomeData(homeData: homeData);
+      await _syncPrayerNotifications(homeData.prayers!);
 
       getPrayersTimesFlag = false;
       return Right(homeData);
@@ -123,21 +122,55 @@ class HomeRepo {
       for (var element in cachedHomeData.prayers!) {
         element.hisTurn = false;
       }
-      PrayerModel nearestPrayer =
-      _getNearestPrayer(cachedHomeData.prayers!).firstWhere((element) {
-        return element.hisTurn == true;
-      });
+      PrayerModel nearestPrayer = _getNearestPrayer(cachedHomeData.prayers!)
+          .firstWhere((element) {
+            return element.hisTurn == true;
+          });
       HomeDataModel homeData = HomeDataModel(
         location: cachedHomeData.location,
         nextPrayer: nearestPrayer.prayer,
         nextPrayerTimeHoursLeft: _getRemainingTime(nearestPrayer).inHours,
         nextPrayerTimeMinutesLeft:
-        _getRemainingTime(nearestPrayer).inMinutes % 60,
+            _getRemainingTime(nearestPrayer).inMinutes % 60,
         prayers: _getNearestPrayer(cachedHomeData.prayers!),
       );
       return Right(homeData);
     } catch (e) {
       return Left(e.toString());
+    }
+  }
+
+  Future<void> _syncPrayerNotifications(List<PrayerModel> prayers) async {
+    try {
+      final Box<dynamic> settingsBox = Hive.box(
+        AppBoxConstants.notificationSettingsBox,
+      );
+      final bool notificationsEnabled =
+          settingsBox.get(
+                AppBoxConstants.prayerNotificationsKey,
+                defaultValue: true,
+              )
+              as bool;
+
+      if (!notificationsEnabled) {
+        await notificationService.cancelPrayerReminders();
+        return;
+      }
+
+      final List<PrayerModel> notificationPrayers = prayers
+          .where((PrayerModel prayer) => prayer.prayer != 'الشروق')
+          .toList(growable: false);
+      final String timeZone = await locationHelper.getLocal();
+      await notificationService.schedulePrayerReminders(
+        prayers: notificationPrayers,
+        timeZone: timeZone,
+      );
+    } catch (error, stackTrace) {
+      log(
+        'Unable to update prayer reminders.',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -153,9 +186,11 @@ class HomeRepo {
 
   List<PrayerModel> _getNearestPrayer(List<PrayerModel> prayers) {
     PrayerModel nearestPrayer = _getNextPrayer(prayers) ?? prayers.first;
-    prayers[prayers
-        .indexWhere((element) => element.prayer == nearestPrayer.prayer)]
-        .hisTurn = true;
+    prayers[prayers.indexWhere(
+              (element) => element.prayer == nearestPrayer.prayer,
+            )]
+            .hisTurn =
+        true;
     return prayers;
   }
 

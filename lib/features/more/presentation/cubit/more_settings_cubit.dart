@@ -1,32 +1,46 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:mo3een/core/helpers/get_current_position_helper.dart';
 import 'package:mo3een/core/utilities/box_constants.dart';
+import 'package:mo3een/features/home/data/models/home_data_model.dart';
+import 'package:mo3een/features/home/data/models/prayer_model.dart';
+import 'package:mo3een/features/home/data/services/notification_service.dart';
 import 'package:mo3een/features/more/presentation/cubit/more_settings_state.dart';
 
 class MoreSettingsCubit extends Cubit<MoreSettingsState> {
-  MoreSettingsCubit()
-    : _settingsBox = Hive.box(AppBoxConstants.notificationSettingsBox),
-      super(
-        const MoreSettingsState(
-          prayerNotificationsEnabled: true,
-          morningAzkarEnabled: true,
-          eveningAzkarEnabled: false,
-        ),
-      ) {
+  MoreSettingsCubit({
+    required NotificationServiceContract notificationService,
+    required LocationHelper locationHelper,
+  }) : _notificationService = notificationService,
+       _locationHelper = locationHelper,
+       _settingsBox = Hive.box(AppBoxConstants.notificationSettingsBox),
+       super(
+         const MoreSettingsState(
+           prayerNotificationsEnabled: true,
+           morningAzkarEnabled: true,
+           eveningAzkarEnabled: false,
+         ),
+       ) {
     _loadSettings();
   }
 
-  static const String _prayerNotificationsKey = 'prayer_notifications';
   static const String _morningAzkarKey = 'morning_azkar_notifications';
   static const String _eveningAzkarKey = 'evening_azkar_notifications';
 
+  final NotificationServiceContract _notificationService;
+  final LocationHelper _locationHelper;
   final Box<dynamic> _settingsBox;
 
   void _loadSettings() {
     emit(
       MoreSettingsState(
         prayerNotificationsEnabled:
-            _settingsBox.get(_prayerNotificationsKey, defaultValue: true)
+            _settingsBox.get(
+                  AppBoxConstants.prayerNotificationsKey,
+                  defaultValue: true,
+                )
                 as bool,
         morningAzkarEnabled:
             _settingsBox.get(_morningAzkarKey, defaultValue: true) as bool,
@@ -37,8 +51,23 @@ class MoreSettingsCubit extends Cubit<MoreSettingsState> {
   }
 
   Future<void> setPrayerNotifications(bool enabled) async {
-    await _settingsBox.put(_prayerNotificationsKey, enabled);
+    await _settingsBox.put(AppBoxConstants.prayerNotificationsKey, enabled);
     emit(state.copyWith(prayerNotificationsEnabled: enabled));
+
+    try {
+      if (!enabled) {
+        await _notificationService.cancelPrayerReminders();
+        return;
+      }
+
+      await _scheduleCachedPrayerReminders();
+    } catch (error, stackTrace) {
+      log(
+        'Unable to update prayer reminders from settings.',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> setMorningAzkarNotifications(bool enabled) async {
@@ -49,5 +78,28 @@ class MoreSettingsCubit extends Cubit<MoreSettingsState> {
   Future<void> setEveningAzkarNotifications(bool enabled) async {
     await _settingsBox.put(_eveningAzkarKey, enabled);
     emit(state.copyWith(eveningAzkarEnabled: enabled));
+  }
+
+  Future<void> _scheduleCachedPrayerReminders() async {
+    final Box<HomeDataModel> homeDataBox = Hive.box<HomeDataModel>(
+      AppBoxConstants.homeDataBox,
+    );
+    if (homeDataBox.isEmpty) {
+      return;
+    }
+
+    final List<PrayerModel>? prayers = homeDataBox.getAt(0)?.prayers;
+    if (prayers == null || prayers.isEmpty) {
+      return;
+    }
+
+    final List<PrayerModel> notificationPrayers = prayers
+        .where((PrayerModel prayer) => prayer.prayer != 'الشروق')
+        .toList(growable: false);
+    final String timeZone = await _locationHelper.getLocal();
+    await _notificationService.schedulePrayerReminders(
+      prayers: notificationPrayers,
+      timeZone: timeZone,
+    );
   }
 }
