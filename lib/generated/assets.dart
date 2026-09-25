@@ -684,6 +684,8 @@ class $AssetsAudioGen {
   final String elFajrNotification = 'assets/audio/el_fajr_notification.mp3';
   final String elMa8rbNotification = 'assets/audio/el_ma8rb_notification.mp3';
   final String elZohrNotification = 'assets/audio/el_zohr_notification.mp3';
+  final String salahQaser = 'assets/audio/salah_qaser.mp3';
+  final String salahTaweel = 'assets/audio/salah_taweel.mp3';
 }
 
 class $AssetsIconsGen {
@@ -693,6 +695,11 @@ class $AssetsIconsGen {
   final SvgGenImage ashaa = const SvgGenImage('assets/icons/ashaa.svg');
   final SvgGenImage asr = const SvgGenImage('assets/icons/asr.svg');
   final SvgGenImage azkar = const SvgGenImage('assets/icons/azkar.svg');
+  final SvgGenImage bell = const SvgGenImage('assets/icons/bell.svg');
+  final SvgGenImage chevronLeft = const SvgGenImage(
+    'assets/icons/chevron_left.svg',
+  );
+  final SvgGenImage compass = const SvgGenImage('assets/icons/compass.svg');
   final SvgGenImage editIcon = const SvgGenImage('assets/icons/edit_icon.svg');
   final SvgGenImage fajr = const SvgGenImage('assets/icons/fajr.svg');
   final SvgGenImage hand = const SvgGenImage('assets/icons/hand.svg');

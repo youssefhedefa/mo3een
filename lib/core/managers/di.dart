@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:hive/hive.dart';
+import 'package:mo3een/core/utilities/box_constants.dart';
+import 'package:mo3een/features/more/data/services/salah_reminder_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mo3een/core/helpers/get_current_position_helper.dart';
@@ -41,8 +44,17 @@ Future<void> setupDependencyInjection() async {
 
   getIt.registerLazySingleton<LocationHelper>(() => LocationHelper());
 
+  getIt.registerLazySingleton<SalahReminderManager>(
+    () => SalahReminderManager(
+      service: getIt<NotificationServiceContract>(),
+      locationHelper: getIt<LocationHelper>(),
+      box: Hive.box(AppBoxConstants.notificationSettingsBox),
+    ),
+  );
+
   getIt.registerFactory<MoreSettingsCubit>(
     () => MoreSettingsCubit(
+      salahReminderManager: getIt<SalahReminderManager>(),
       notificationService: getIt<NotificationServiceContract>(),
       locationHelper: getIt<LocationHelper>(),
     ),

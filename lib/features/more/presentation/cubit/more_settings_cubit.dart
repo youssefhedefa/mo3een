@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:mo3een/features/more/data/models/salah_reminder_settings.dart';
+import 'package:mo3een/features/more/data/services/salah_reminder_manager.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
@@ -13,8 +15,10 @@ class MoreSettingsCubit extends Cubit<MoreSettingsState> {
   MoreSettingsCubit({
     required NotificationServiceContract notificationService,
     required LocationHelper locationHelper,
+    required SalahReminderManager salahReminderManager,
   }) : _notificationService = notificationService,
        _locationHelper = locationHelper,
+       _salahReminderManager = salahReminderManager,
        _settingsBox = Hive.box(AppBoxConstants.notificationSettingsBox),
        super(
          const MoreSettingsState(
@@ -31,11 +35,13 @@ class MoreSettingsCubit extends Cubit<MoreSettingsState> {
 
   final NotificationServiceContract _notificationService;
   final LocationHelper _locationHelper;
+  final SalahReminderManager _salahReminderManager;
   final Box<dynamic> _settingsBox;
 
   void _loadSettings() {
     emit(
       MoreSettingsState(
+        salahReminder: _salahReminderManager.settings,
         prayerNotificationsEnabled:
             _settingsBox.get(
                   AppBoxConstants.prayerNotificationsKey,
@@ -48,6 +54,19 @@ class MoreSettingsCubit extends Cubit<MoreSettingsState> {
             _settingsBox.get(_eveningAzkarKey, defaultValue: false) as bool,
       ),
     );
+  }
+
+  Future<void> saveSalahReminder(SalahReminderSettings settings) async {
+    try {
+      await _salahReminderManager.save(settings);
+      if (settings.enabled) {
+        await _notificationService.showSalahReminder(settings);
+      }
+    } finally {
+      if (!isClosed) {
+        emit(state.copyWith(salahReminder: _salahReminderManager.settings));
+      }
+    }
   }
 
   Future<void> setPrayerNotifications(bool enabled) async {

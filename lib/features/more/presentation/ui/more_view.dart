@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mo3een/features/more/presentation/ui/widgets/salah_reminder_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mo3een/core/helpers/color_helper.dart';
@@ -93,6 +94,19 @@ class _MoreViewBody extends StatelessWidget {
                         title: 'تذكير أذكار المساء',
                         value: state.eveningAzkarEnabled,
                         onChanged: cubit.setEveningAzkarNotifications,
+                      ),
+                      SizedBox(height: 12.h),
+                      NotificationOptionTile.settings(
+                        title: 'تذكير الصلاة على محمد',
+                        value: state.salahReminder.enabled,
+                        onTap: () => showDialog<void>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) => SalahReminderDialog(
+                            initialSettings: state.salahReminder,
+                            onSave: cubit.saveSalahReminder,
+                          ),
+                        ),
                       ),
                     ],
                   );

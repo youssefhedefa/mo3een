@@ -10,17 +10,27 @@ class NotificationOptionTile extends StatelessWidget {
     required this.title,
     required this.value,
     required this.onChanged,
-  });
+  }) : onOpenSettings = null;
+
+  const NotificationOptionTile.settings({
+    super.key,
+    required this.title,
+    required this.value,
+    required VoidCallback onTap,
+  }) : onOpenSettings = onTap,
+       onChanged = null;
 
   final String title;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final ValueChanged<bool>? onChanged;
+  final VoidCallback? onOpenSettings;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      toggled: value,
+      toggled: onOpenSettings == null ? value : null,
+      value: onOpenSettings != null ? (value ? 'مفعّل' : 'متوقف') : null,
       label: title,
       child: Material(
         color: AppColorHelper.lightCoffeeColor,
@@ -29,7 +39,7 @@ class NotificationOptionTile extends StatelessWidget {
           side: const BorderSide(color: AppColorHelper.primaryColor),
         ),
         child: InkWell(
-          onTap: () => onChanged(!value),
+          onTap: onOpenSettings ?? () => onChanged!(!value),
           borderRadius: BorderRadius.circular(12.r),
           child: SizedBox(
             height: 58.h,
@@ -55,7 +65,17 @@ class NotificationOptionTile extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 12.w),
-                  _CompactToggle(value: value),
+                  if (onOpenSettings != null)
+                    IconButton(
+                      onPressed: onOpenSettings,
+                      tooltip: 'إعدادات التذكير',
+                      icon: const Icon(
+                        Icons.settings_outlined,
+                        color: AppColorHelper.primaryColor,
+                      ),
+                    )
+                  else
+                    _CompactToggle(value: value),
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:mo3een/features/more/data/services/salah_reminder_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,7 @@ void main() async {
     Hive.openBox(AppBoxConstants.onBoardingBox),
     Hive.openBox(AppBoxConstants.notificationSettingsBox),
   ]);
+  await getIt<SalahReminderManager>().reconcile(force: true);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('ar')],

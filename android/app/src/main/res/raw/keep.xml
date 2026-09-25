@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notification resources are looked up by name by the native plugin. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/el_fajr_notification,@raw/el_zohr_notification,@raw/el_3asr_notification,@raw/el_ma8rb_notification,@raw/el_3e4a_notification,@raw/salah_qaser,@raw/salah_taweel,@mipmap/ic_launcher" />
